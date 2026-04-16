@@ -79,7 +79,7 @@ body::before {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #00F5FF, #A855F7);
+  background: linear-gradient(180deg, #828282, #ffffff);
   border-radius: 10px;
 }
 
@@ -427,7 +427,7 @@ body::before {
   left: 0;
   height: 3px;
   width: 60px;
-  background: linear-gradient(90deg, #00F5FF, #A855F7);
+  background: #00F5FF;
   border-radius: 2px;
 }
 

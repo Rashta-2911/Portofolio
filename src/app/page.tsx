@@ -52,6 +52,31 @@ interface NavItem {
 }
 
 /* =============================================
+   DATA DEFINITIONS
+   ============================================= */
+const PROJECTS_DATA = [
+  {
+    title: "RuangKonsul",
+    desc: "A full-stack application with doctor scheduling, real-time chat, and Midtrans payment integration.",
+    tags: ["Laravel", "Filament", "Midtrans"],
+    gradient: "linear-gradient(135deg, rgba(0,245,255,0.15), rgba(168,85,247,0.15))",
+    borderColor: "rgba(0,245,255,0.15)",
+  },
+  {
+    title: "Portfolio Website",
+    desc: "Modern portfolio with glassmorphism design, smooth animations, and responsive layout built with Next.js.",
+    tags: ["Next.js", "Tailwind", "TypeScript"],
+    gradient: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(173,255,47,0.15))",
+    borderColor: "rgba(168,85,247,0.15)",
+  },
+];
+
+const CERTIFICATES_DATA = [
+  { src: "/Images/Certificate 1.jpg", alt: "Inolabs Academy" },
+  { src: "/Images/Certificate 2.jpg", alt: "HIMSISFO (Himpunan Sistem Informasi)" },
+];
+
+/* =============================================
    MAIN COMPONENT
    ============================================= */
 export default function MainPage() {
@@ -312,10 +337,10 @@ function HomePage() {
             </div>
 
             {/* Quick stats */}
-            <div className="flex gap-8 mt-10">
+            <div className="flex flex-wrap gap-4 sm:gap-8 mt-10">
               <StatBadge value="6th" label="Semester" />
-              <StatBadge value="10+" label="Projects" />
-              <StatBadge value="2" label="Certificates" />
+              <StatBadge value={PROJECTS_DATA.length.toString()} label="Projects" />
+              <StatBadge value={CERTIFICATES_DATA.length.toString()} label="Certificates" />
             </div>
           </div>
 
@@ -359,7 +384,7 @@ function HomePage() {
                   className="absolute w-2 h-2 rounded-full"
                   style={{
                     background: "#ADFF2F",
-                    boxShadow: "0 0 15px rgba(173,255,47,0.6)",
+                    boxShadow: "#00F5FF",
                     animation: "orbit 16s linear infinite",
                     top: "50%",
                     left: "50%",
@@ -400,12 +425,12 @@ function HomePage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <SkillCard
             icon={<FaHtml5 size={36} />}
-            name="HTML5"
+            name="HTML"
             color="#E44D26"
           />
           <SkillCard
             icon={<FaCss3Alt size={36} />}
-            name="CSS3"
+            name="CSS"
             color="#1572B6"
           />
           <SkillCard
@@ -470,61 +495,58 @@ function HomePage() {
           />
         </div>
       </section>
+
+      {/* GITHUB CONTRIBUTIONS */}
+      <section className="mt-32 animate-fade-in-up">
+        <div className="flex items-center gap-4 mb-8">
+          <h2 className="text-3xl font-bold section-heading gradient-text-primary">
+            GitHub Contributions
+          </h2>
+        </div>
+        <GithubStatsRealtime />
+      </section>
     </div>
   );
 }
 
 /* ========== PROJECTS PAGE ========== */
 function ProjectsPage() {
-  const projects = [
-    {
-      title: "RuangKonsul",
-      desc: "A full-stack application with doctor scheduling, real-time chat, and Midtrans payment integration.",
-      tags: ["Laravel", "Filament", "Midtrans"],
-      gradient: "linear-gradient(135deg, rgba(0,245,255,0.15), rgba(168,85,247,0.15))",
-      borderColor: "rgba(0,245,255,0.15)",
-    },
-    {
-      title: "Portfolio Website",
-      desc: "Modern portfolio with glassmorphism design, smooth animations, and responsive layout built with Next.js.",
-      tags: ["Next.js", "Tailwind", "TypeScript"],
-      gradient: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(173,255,47,0.15))",
-      borderColor: "rgba(168,85,247,0.15)",
-    },
-  ];
-
   return (
     <div className="animate-fade-in-up">
-      <h1 className="text-4xl font-bold section-heading gradient-text-primary mb-12">
+      <h1 className="text-4xl font-bold section-heading text-white mb-4">
         My Projects
       </h1>
+      <p className="text-text-secondary mb-12 max-w-2xl">
+        Explore my latest projects showcasing expertise in full-stack development, UI/UX design, and systems analysis.
+      </p>
 
       <div className="grid md:grid-cols-2 gap-6">
-        {projects.map((project, i) => (
+        {PROJECTS_DATA.map((project, i) => (
           <div
             key={i}
-            className="glass-card p-6 group"
+            className="glass-card p-6 group hover:translate-y-[-4px] transition-all duration-300"
             style={{
-              background: project.gradient,
-              borderColor: project.borderColor,
+              background: "rgba(0,245,255,0.05)",
+              borderColor: "rgba(0,245,255,0.15)",
+              border: "1px solid rgba(0,245,255,0.15)",
               animationDelay: `${i * 0.15}s`,
             }}
           >
             {/* Project icon placeholder */}
             <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+              className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
               style={{
-                background: "rgba(0,245,255,0.1)",
-                border: "1px solid rgba(0,245,255,0.15)",
+                background: "linear-gradient(135deg, rgba(0,245,255,0.15), rgba(168,85,247,0.15))",
+                border: "1px solid rgba(0,245,255,0.2)",
               }}
             >
               <FolderKanban
                 size={22}
-                className="text-primary group-hover:scale-110 transition-transform"
+                className="text-primary"
               />
             </div>
 
-            <h3 className="text-xl font-bold text-text-primary mb-2">
+            <h3 className="text-xl font-bold text-text-primary mb-2 group-hover:text-primary transition-colors">
               {project.title}
             </h3>
             <p className="text-text-secondary text-sm leading-relaxed mb-4">
@@ -548,7 +570,7 @@ function ProjectsPage() {
               ))}
             </div>
 
-            <button className="inline-flex items-center gap-2 text-sm text-primary font-medium hover:gap-3 transition-all cursor-pointer bg-transparent border-none">
+            <button className="inline-flex items-center gap-2 text-sm text-primary font-medium hover:gap-3 transition-all cursor-pointer bg-transparent border-none hover:text-secondary">
               View Project <ExternalLink size={14} />
             </button>
           </div>
@@ -562,9 +584,12 @@ function ProjectsPage() {
 function AboutPage() {
   return (
     <div className="animate-fade-in-up">
-      <h1 className="text-4xl font-bold section-heading gradient-text-primary mb-12">
+      <h1 className="text-4xl font-bold section-heading text-white mb-4">
         About Me
       </h1>
+      <p className="text-text-secondary mb-12 max-w-2xl">
+        Get to know me better and discover my journey in technology and design.
+      </p>
 
       <div className="grid md:grid-cols-3 gap-6">
         {/* Main about card */}
@@ -608,9 +633,9 @@ function AboutPage() {
       {/* Tools I use */}
       <div className="mt-12">
         <h3 className="text-xl font-bold text-text-primary mb-6">
-          Tools I Use
+          Tools & Technologies
         </h3>
-        <div className="flex flex-wrap gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             "Figma",
             "Canva",
@@ -619,18 +644,19 @@ function AboutPage() {
             "Microsoft Office",
             "GitHub",
             "Notion",
+            "Adobe XD",
           ].map((tool) => (
-            <span
+            <div
               key={tool}
-              className="px-4 py-2 rounded-xl text-sm font-medium glass-card"
+              className="px-4 py-3 rounded-xl text-sm font-medium glass-card hover:translate-y-[-2px] transition-all duration-300"
               style={{
-                background: "rgba(15,23,42,0.5)",
-                color: "#94A3B8",
-                border: "1px solid rgba(0,245,255,0.06)",
+                background: "rgba(0,245,255,0.08)",
+                color: "#00F5FF",
+                border: "1px solid rgba(0,245,255,0.12)",
               }}
             >
               {tool}
-            </span>
+            </div>
           ))}
         </div>
       </div>
@@ -642,16 +668,19 @@ function AboutPage() {
 function EducationPage() {
   return (
     <div className="animate-fade-in-up">
-      <h1 className="text-4xl font-bold section-heading gradient-text-primary mb-12">
+      <h1 className="text-4xl font-bold section-heading gradient-text-primary mb-4">
         Education
       </h1>
+      <p className="text-text-secondary mb-12 max-w-2xl">
+        My academic journey and achievements in Information Systems and design.
+      </p>
 
       <div className="space-y-6">
         <EducationCard
           institution="Bina Nusantara University"
           degree="S1 — Information Systems"
           period="2023 — Present"
-          desc="Currently in the 5th semester. Focused on UI/UX design, systems analysis, and software development."
+          desc="Currently in the 6th semester. Focused on UI/UX design, systems analysis, and full-stack software development. Active in student organizations and community projects."
           color="#00F5FF"
           active
         />
@@ -659,9 +688,38 @@ function EducationPage() {
           institution="Peter Canisius Minor Seminary Mertoyudan"
           degree="Social Sciences (IPS)"
           period="2019 — 2023"
-          desc="Graduated with strong foundation in analytical thinking and technology."
+          desc="Graduated with strong foundation in analytical thinking, technology, and communication skills. Participated in various academic competitions and projects."
           color="#A855F7"
         />
+      </div>
+
+      {/* Skills Section */}
+      <div className="mt-12">
+        <h3 className="text-xl font-bold text-text-primary mb-6">
+          Key Skills Developed
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div
+            className="glass-card p-4"
+            style={{
+              background: "rgba(0,245,255,0.05)",
+              border: "1px solid rgba(0,245,255,0.1)",
+            }}
+          >
+            <p className="font-semibold text-primary mb-2">Technical</p>
+            <p className="text-sm text-text-secondary">Web Development, Database Design, System Architecture, API Development</p>
+          </div>
+          <div
+            className="glass-card p-4"
+            style={{
+              background: "rgba(168,85,247,0.05)",
+              border: "1px solid rgba(168,85,247,0.1)",
+            }}
+          >
+            <p className="font-semibold text-secondary mb-2">Design</p>
+            <p className="text-sm text-text-secondary">UI/UX Design, Wireframing, Prototyping, Visual Design Systems</p>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -672,26 +730,32 @@ function ExperiencePage() {
   const experiences = [
     {
       title: "CB (Character Building)",
-      desc: "Dalam proyek ini saya terlibat dalam memberikan ajaran kepada masyarakat dan berpartisipasi dalam penyusunan laporan akhir, dokumentasi dan brainstorming ide kreatif.",
+      desc: "Involved in community service projects, providing education to the community and participating in final report compilation, documentation, and creative brainstorming.",
       color: "#00F5FF",
+      year: "2024",
     },
     {
       title: "HIMSISFO (Himpunan Sistem Informasi)",
-      desc: "Sebagai aktivis HIMSISFO komisi 2 Public Relation 2025 terlibat dalam kepanitiaan divisi acara BPAR dan HIMSISFO Gold.",
-      color: "#00F5FF",
+      desc: "Public Relations Commission member for 2025. Involved in event planning committees including BPAR division and HIMSISFO Gold events.",
+      color: "#A855F7",
+      year: "2024",
     },
     {
-      title: "HARDIKNAS (Hari Pendidikan Nasional)",
-      desc: "Berperan sebagai pengajar di SDN Srondol Wetan 05 dalam kegiatan pendampingan belajar bagi siswa.",
-      color: "#00F5FF",
+      title: "HARDIKNAS (National Education Day)",
+      desc: "Served as an educator at SDN Srondol Wetan 05 in learning assistance activities for students during national education celebration.",
+      color: "#ADFF2F",
+      year: "2024",
     },
   ];
 
   return (
     <div className="animate-fade-in-up">
-      <h1 className="text-4xl font-bold section-heading gradient-text-primary mb-12">
-        Experience
+      <h1 className="text-4xl font-bold section-heading gradient-text-primary mb-4">
+        Experience & Activities
       </h1>
+      <p className="text-text-secondary mb-12 max-w-2xl">
+        My involvement in educational, organizational, and community projects.
+      </p>
 
       {/* Timeline */}
       <div className="relative pl-8">
@@ -699,8 +763,7 @@ function ExperiencePage() {
         <div
           className="absolute left-0 top-0 bottom-0 w-[2px]"
           style={{
-            background:
-              "linear-gradient(180deg, #00F5FF, #00F5FF, #00F5FF, transparent)",
+            background: "linear-gradient(to bottom, rgba(0,245,255,0.3), rgba(168,85,247,0.3))",
           }}
         />
 
@@ -713,24 +776,33 @@ function ExperiencePage() {
             >
               {/* Timeline dot */}
               <div
-                className="absolute -left-8 top-2 w-4 h-4 rounded-full"
+                className="absolute -left-8 top-2 w-5 h-5 rounded-full"
                 style={{
                   background: exp.color,
-                  border: "3px solid #070b14",
-                  boxShadow: `0 0 15px ${exp.color}66`,
-                  transform: "translateX(-50%)",
-                  left: "-0.02rem",
+                  boxShadow: `0 0 20px ${exp.color}88, inset 0 0 10px ${exp.color}44`,
+                  left: "-0.62rem",
                 }}
               />
 
               {/* Card */}
-              <div className="glass-card p-6 ml-4">
-                <h3
-                  className="text-xl font-bold mb-3"
-                  style={{ color: exp.color }}
-                >
-                  {exp.title}
-                </h3>
+              <div
+                className="glass-card p-6 ml-4 hover:translate-x-1 transition-transform duration-300"
+                style={{
+                  borderLeft: `3px solid ${exp.color}`,
+                  background: "rgba(15,23,42,0.6)",
+                }}
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <h3
+                    className="text-xl font-bold"
+                    style={{ color: exp.color }}
+                  >
+                    {exp.title}
+                  </h3>
+                  <span className="text-xs font-semibold text-text-muted bg-neutral-light px-2 py-1 rounded">
+                    {exp.year}
+                  </span>
+                </div>
                 <p className="text-text-secondary leading-relaxed">
                   {exp.desc}
                 </p>
@@ -750,44 +822,45 @@ function CertificatesPage() {
     alt: string;
   } | null>(null);
 
-  const certs = [
-    { src: "/Images/Certificate 1.jpg", alt: "Inolabs Academy" },
-    { src: "/Images/Certificate 2.jpg", alt: "HIMSISFO (Himpunan Sistem Informasi)" },
-  ];
-
   return (
     <>
       <div className="animate-fade-in-up">
-        <h1 className="text-4xl font-bold section-heading gradient-text-primary mb-12">
-          Certificates
+        <h1 className="text-4xl font-bold section-heading gradient-text-primary mb-4">
+          Certificates & Achievements
         </h1>
+        <p className="text-text-secondary mb-12 max-w-2xl">
+          Professional certificates and credentials earned through various programs and organizations.
+        </p>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {certs.map((cert, i) => (
+          {CERTIFICATES_DATA.map((cert, i) => (
             <div
               key={i}
-              className="glass-card overflow-hidden group animate-fade-in-scale"
-              style={{ animationDelay: `${i * 0.2}s` }}
+              className="glass-card overflow-hidden group animate-fade-in-scale hover:shadow-2xl transition-all duration-300"
+              style={{
+                border: "1px solid rgba(0,245,255,0.1)",
+                animationDelay: `${i * 0.2}s`,
+              }}
             >
               {/* Image */}
-              <div className="relative w-full h-78 overflow-hidden">
+              <div className="relative w-full h-80 overflow-hidden bg-neutral">
                 <Image
                   src={cert.src}
                   alt={cert.alt}
                   fill
                   priority
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                {/* Overlay on hover — click opens lightbox */}
+                {/* Overlay on hover */}
                 <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer"
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer backdrop-blur-sm"
                   style={{
                     background:
-                      "linear-gradient(180deg, transparent, rgba(15,23,42,0.8))",
+                      "linear-gradient(180deg, rgba(0,245,255,0.1), rgba(15,23,42,0.8))",
                   }}
                   onClick={() => setLightbox(cert)}
                 >
-                  <span className="text-primary font-medium text-sm flex items-center gap-2">
+                  <span className="text-primary font-medium text-sm flex items-center gap-2 bg-neutral-dark px-4 py-2 rounded-lg">
                     <ExternalLink size={16} /> View Full Size
                   </span>
                 </div>
@@ -795,7 +868,7 @@ function CertificatesPage() {
 
               {/* Label */}
               <div className="p-4">
-                <p className="text-text-primary font-medium">{cert.alt}</p>
+                <p className="text-text-primary font-semibold">{cert.alt}</p>
                 <p className="text-text-muted text-sm">Professional Certificate</p>
               </div>
             </div>
@@ -803,7 +876,7 @@ function CertificatesPage() {
         </div>
       </div>
 
-      {/* ===== LIGHTBOX MODAL (rendered outside animated div) ===== */}
+      {/* ===== LIGHTBOX MODAL ===== */}
       {lightbox && (
         <div
           style={{
@@ -816,7 +889,7 @@ function CertificatesPage() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: "rgba(0, 0, 0, 0.85)",
+            background: "rgba(0, 0, 0, 0.9)",
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
             animation: "fadeInScale 0.3s ease-out both",
@@ -1065,4 +1138,235 @@ function EducationCard({
       </div>
     </div>
   );
+}
+
+function GithubStatsRealtime() {
+
+  const [stats, setStats] = useState<any>(null)
+  const [streak, setStreak] = useState(0)
+  const [todayCommit, setTodayCommit] = useState(0)
+
+  useEffect(() => {
+    fetch("/API/Github")
+      .then(res => res.json())
+      .then(data => {
+
+        setStats(data)
+
+        const allDays = data.weeks.flatMap((w:any)=>
+          w.contributionDays
+        )
+
+        let currentStreak = 0
+
+        for (let i = allDays.length - 1; i >= 0; i--) {
+          if (allDays[i].contributionCount > 0) {
+            currentStreak++
+          } else {
+            break
+          }
+        }
+
+        setStreak(currentStreak)
+
+        const today = new Date().toISOString().split("T")[0]
+
+        const todayData = allDays.find((d:any)=>
+          d.date === today
+        )
+
+        if (todayData) {
+          setTodayCommit(todayData.contributionCount)
+        }
+
+      })
+  }, [])
+
+  if (!stats) return <p>Loading GitHub Stats...</p>
+
+  // Get contribution color based on count
+  const getContributionColor = (count: number, maxCount: number) => {
+    if (count === 0) return "rgba(255, 255, 255, 0.1)";
+    const intensity = Math.min(count / Math.max(maxCount, 1), 1);
+    if (intensity < 0.25) return "rgba(173, 255, 47, 0.3)";
+    if (intensity < 0.5) return "rgba(173, 255, 47, 0.5)";
+    if (intensity < 0.75) return "rgba(173, 255, 47, 0.7)";
+    return "rgba(173, 255, 47, 1)";
+  };
+
+  // Get max contribution count
+  const allDays = stats.weeks.flatMap((w:any) => w.contributionDays);
+  const maxContribution = Math.max(...allDays.map((d:any) => d.contributionCount));
+
+  // Get month labels with proper positioning
+  const getMonthLabel = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleString("en", { month: "short" });
+  };
+
+  // Calculate month boundaries and their positions
+  const monthPositions: { month: string; startWeek: number; endWeek: number }[] = [];
+  let currentMonth = "";
+  let monthStart = 0;
+
+  stats.weeks.forEach((week: any, weekIndex: number) => {
+    if (week.contributionDays.length > 0) {
+      const firstDay = week.contributionDays[0].date;
+      const month = getMonthLabel(firstDay);
+      
+      if (month !== currentMonth) {
+        if (currentMonth !== "") {
+          monthPositions.push({
+            month: currentMonth,
+            startWeek: monthStart,
+            endWeek: weekIndex - 1,
+          });
+        }
+        currentMonth = month;
+        monthStart = weekIndex;
+      }
+    }
+  });
+
+  // Add the last month
+  if (currentMonth !== "") {
+    monthPositions.push({
+      month: currentMonth,
+      startWeek: monthStart,
+      endWeek: stats.weeks.length - 1,
+    });
+  }
+
+  const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const CELL_SIZE = 14; // Size of each contribution square + gap
+  const CELL_GAP = 2; // Gap between cells
+
+  return (
+    <div className="w-full mt-12 overflow-x-auto pb-4">
+      <div 
+        className="glass-card p-6 inline-block min-w-full"
+        style={{
+          background: "rgba(15, 23, 42, 0.6)",
+          border: "1px solid rgba(0, 245, 255, 0.1)",
+        }}
+      >
+        {/* Month labels */}
+        <div className="flex items-start">
+          {/* Spacer for day labels column */}
+          <div style={{ minWidth: "42px" }} />
+          
+          {/* Month labels row */}
+          <div className="flex" style={{ gap: `${CELL_GAP}px` }}>
+            {monthPositions.map((monthPos, idx) => {
+              const monthWidth = (monthPos.endWeek - monthPos.startWeek + 1) * CELL_SIZE;
+              return (
+                <div
+                  key={`month-${idx}`}
+                  style={{
+                    width: `${monthWidth}px`,
+                    textAlign: "left",
+                    paddingLeft: "2px",
+                  }}
+                >
+                  <p className="text-xs text-text-muted font-medium">{monthPos.month}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Contribution grid */}
+        <div className="flex gap-1 mt-4">
+          {/* Day labels column */}
+          <div className="flex flex-col gap-0.5">
+            {dayLabels.map((day) => (
+              <div
+                key={day}
+                className="flex items-center justify-center"
+                style={{
+                  minWidth: "42px",
+                  height: `${CELL_SIZE}px`,
+                }}
+              >
+                <span className="text-xs text-text-muted font-medium">{day}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Weeks grid */}
+          <div className="flex" style={{ gap: `${CELL_GAP}px` }}>
+            {stats.weeks.map((week: any, weekIndex: number) => (
+              <div key={weekIndex} className="flex flex-col gap-0.5">
+                {week.contributionDays.map((day: any, dayIndex: number) => (
+                  <div
+                    key={`${weekIndex}-${dayIndex}`}
+                    title={`${day.date}: ${day.contributionCount} contributions`}
+                    className="rounded-sm cursor-pointer hover:ring-1 hover:ring-primary transition-all"
+                    style={{
+                      width: `${CELL_SIZE - CELL_GAP}px`,
+                      height: `${CELL_SIZE - CELL_GAP}px`,
+                      backgroundColor: getContributionColor(day.contributionCount, maxContribution),
+                      border: "1px solid rgba(0, 245, 255, 0.1)",
+                    }}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Legend */}
+        <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-700">
+          <span className="text-xs text-text-muted">Less</span>
+          <div className="flex gap-0.5">
+            <div
+              className="w-3 h-3 rounded-sm"
+              style={{ backgroundColor: "rgba(255, 255, 255, 0.1)" }}
+            />
+            <div
+              className="w-3 h-3 rounded-sm"
+              style={{ backgroundColor: "rgba(173, 255, 47, 0.3)" }}
+            />
+            <div
+              className="w-3 h-3 rounded-sm"
+              style={{ backgroundColor: "rgba(173, 255, 47, 0.5)" }}
+            />
+            <div
+              className="w-3 h-3 rounded-sm"
+              style={{ backgroundColor: "rgba(173, 255, 47, 0.7)" }}
+            />
+            <div
+              className="w-3 h-3 rounded-sm"
+              style={{ backgroundColor: "rgba(173, 255, 47, 1)" }}
+            />
+          </div>
+          <span className="text-xs text-text-muted">More</span>
+        </div>
+
+        {/* Stats row */}
+        <div className="grid grid-cols-5 gap-4 mt-6 pt-6 border-t border-gray-700">
+          <div>
+            <p className="text-2xl font-bold gradient-text-primary">{stats.repos}</p>
+            <p className="text-xs text-text-muted">Repositories</p>
+          </div>
+          <div>
+            <p className="text-2xl font-bold gradient-text-primary">{stats.followers}</p>
+            <p className="text-xs text-text-muted">Followers</p>
+          </div>
+          <div>
+            <p className="text-2xl font-bold gradient-text-primary">{stats.contributions}</p>
+            <p className="text-xs text-text-muted">Contributions</p>
+          </div>
+          <div>
+            <p className="text-2xl font-bold gradient-text-primary">{todayCommit}</p>
+            <p className="text-xs text-text-muted">Today</p>
+          </div>
+          <div>
+            <p className="text-2xl font-bold gradient-text-primary">🔥 {streak}</p>
+            <p className="text-xs text-text-muted">Streak</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
