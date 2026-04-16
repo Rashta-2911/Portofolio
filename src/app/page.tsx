@@ -108,7 +108,7 @@ export default function MainPage() {
     <div className="flex min-h-screen relative">
       {/* ========== SIDEBAR (Desktop) ========== */}
       <aside
-        className="hidden md:flex w-70 flex-col fixed top-0 left-0 h-screen z-40 glass"
+        className="hidden md:flex w-72 flex-col fixed top-0 left-0 h-screen z-40 glass"
         style={{
           borderRight: "1px solid rgba(0,245,255,0.08)",
         }}
@@ -236,7 +236,7 @@ export default function MainPage() {
 
       {/* ========== MAIN CONTENT ========== */}
       <main className="flex-1 md:ml-72 min-h-screen grid-pattern">
-        <div className="max-w-5xl mx-auto px-6 md:px-12 py-8 md:py-16 mt-14 md:mt-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 md:py-16 mt-14 md:mt-0 w-full overflow-hidden">
           {/* HOME PAGE */}
           {activePage === "home" && <HomePage />}
 
@@ -290,7 +290,7 @@ function HomePage() {
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
               <span className="text-text-primary">Hi, I&apos;m</span>
               <br />
               <span className="gradient-text-primary">
@@ -349,10 +349,8 @@ function HomePage() {
             <div className="relative">
               {/* Decorative orbit rings */}
               <div
-                className="absolute inset-0 rounded-full"
+                className="absolute inset-0 rounded-full w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] lg:w-[400px] lg:h-[400px]"
                 style={{
-                  width: "320px",
-                  height: "320px",
                   margin: "auto",
                   top: 0,
                   bottom: 0,
@@ -395,7 +393,7 @@ function HomePage() {
               {/* Profile image */}
               <div className="profile-ring">
                 <div
-                  className="relative w-64 h-64 md:w-72 md:h-72 rounded-full overflow-hidden"
+                  className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden"
                   style={{
                     border: "3px solid rgba(15,23,42,0.8)",
                   }}
@@ -422,7 +420,7 @@ function HomePage() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-4">
           <SkillCard
             icon={<FaHtml5 size={36} />}
             name="HTML"
@@ -520,7 +518,7 @@ function ProjectsPage() {
         Explore my latest projects showcasing expertise in full-stack development, UI/UX design, and systems analysis.
       </p>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
         {PROJECTS_DATA.map((project, i) => (
           <div
             key={i}
@@ -591,9 +589,9 @@ function AboutPage() {
         Get to know me better and discover my journey in technology and design.
       </p>
 
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid lg:grid-cols-3 gap-6">
         {/* Main about card */}
-        <div className="md:col-span-2 glass-card p-8">
+        <div className="lg:col-span-2 glass-card p-6 sm:p-8">
           <p className="text-text-secondary text-lg leading-relaxed mb-6">
             I am a passionate Information Systems student with a keen interest in{" "}
             <span className="text-primary font-medium">UI/UX Design</span> and{" "}
@@ -635,7 +633,7 @@ function AboutPage() {
         <h3 className="text-xl font-bold text-text-primary mb-6">
           Tools & Technologies
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
           {[
             "Figma",
             "Canva",
@@ -832,7 +830,7 @@ function CertificatesPage() {
           Professional certificates and credentials earned through various programs and organizations.
         </p>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
           {CERTIFICATES_DATA.map((cert, i) => (
             <div
               key={i}
@@ -1344,7 +1342,7 @@ function GithubStatsRealtime() {
         </div>
 
         {/* Stats row */}
-        <div className="grid grid-cols-5 gap-4 mt-6 pt-6 border-t border-gray-700">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-6 pt-6 border-t border-gray-700">
           <div>
             <p className="text-2xl font-bold gradient-text-primary">{stats.repos}</p>
             <p className="text-xs text-text-muted">Repositories</p>
