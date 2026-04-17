@@ -1265,8 +1265,8 @@ function GithubStatsRealtime() {
   }
 
   const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const CELL_SIZE = 14; // Size of each contribution square + gap
-  const CELL_GAP = 2; // Gap between cells
+  const CELL_SIZE = 20; // Size of each contribution square + gap
+  const CELL_GAP = 0.5; // Gap between cells
 
   return (
     <div className="w-full mt-12 overflow-x-auto pb-4">
