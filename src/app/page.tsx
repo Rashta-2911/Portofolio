@@ -69,6 +69,7 @@ const PROJECTS_DATA = [
     tags: ["Next.js", "Tailwind", "TypeScript"],
     gradient: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(173,255,47,0.15))",
     borderColor: "rgba(168,85,247,0.15)",
+    link: "https://portofolio-alpha-eight-17.vercel.app/",
   },
 ];
 
@@ -578,9 +579,14 @@ function ProjectsPage() {
               ))}
             </div>
 
-            <button className="inline-flex items-center gap-2 text-xs sm:text-sm text-primary font-medium hover:gap-3 transition-all cursor-pointer bg-transparent border-none hover:text-secondary">
+            <a 
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm text-primary font-medium hover:gap-3 transition-all cursor-pointer bg-transparent border-none hover:text-secondary no-underline"
+            >
               View Project <ExternalLink size={12} />
-            </button>
+            </a>
           </div>
         ))}
       </div>
