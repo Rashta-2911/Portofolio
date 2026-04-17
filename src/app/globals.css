@@ -9,6 +9,7 @@
    ============================================= */
 
 @theme {
+  --breakpoint-xs: 480px;
   --color-primary: #00F5FF;
   --color-primary-dim: #00c4cc;
   --color-primary-glow: rgba(0, 245, 255, 0.25);
@@ -296,13 +297,25 @@ body::before {
   background: linear-gradient(135deg, #00F5FF, #00c4cc);
   color: #0F172A;
   font-weight: 600;
-  padding: 12px 28px;
+  padding: 10px 20px;
   border-radius: 12px;
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+}
+
+@media (min-width: 480px) {
+  .btn-primary {
+    padding: 11px 24px;
+  }
+}
+
+@media (min-width: 768px) {
+  .btn-primary {
+    padding: 12px 28px;
+  }
 }
 
 .btn-primary::before {
@@ -329,11 +342,23 @@ body::before {
   background: transparent;
   color: #00F5FF;
   font-weight: 600;
-  padding: 12px 28px;
+  padding: 10px 20px;
   border-radius: 12px;
   border: 2px solid rgba(0, 245, 255, 0.3);
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+@media (min-width: 480px) {
+  .btn-secondary {
+    padding: 11px 24px;
+  }
+}
+
+@media (min-width: 768px) {
+  .btn-secondary {
+    padding: 12px 28px;
+  }
 }
 
 .btn-secondary:hover {

@@ -105,7 +105,7 @@ export default function MainPage() {
   if (!mounted) return null;
 
   return (
-    <div className="flex min-h-screen relative">
+    <div className="flex w-full min-h-screen relative overflow-x-hidden">
       {/* ========== SIDEBAR (Desktop) ========== */}
       <aside
         className="hidden md:flex w-72 flex-col fixed top-0 left-0 h-screen z-40 glass"
@@ -235,8 +235,8 @@ export default function MainPage() {
       )}
 
       {/* ========== MAIN CONTENT ========== */}
-      <main className="flex-1 md:ml-72 min-h-screen grid-pattern">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 md:py-16 mt-14 md:mt-0 w-full overflow-hidden">
+      <main className="flex-1 min-w-0 max-w-full md:ml-72 min-h-screen grid-pattern overflow-x-hidden">
+        <div className="w-full mx-auto px-3 sm:px-5 md:px-8 lg:px-12 py-6 sm:py-8 md:py-12 lg:py-16 mt-16 sm:mt-14 md:mt-0 overflow-hidden max-w-screen-2xl lg:mx-auto">
           {/* HOME PAGE */}
           {activePage === "home" && <HomePage />}
 
@@ -269,13 +269,13 @@ function HomePage() {
   return (
     <div>
       {/* HERO */}
-      <section className="min-h-[80vh] flex items-center">
-        <div className="grid md:grid-cols-2 gap-12 items-center w-full">
+      <section className="min-h-[80vh] flex items-center py-4 sm:py-6 md:py-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center w-full">
           {/* Left Column */}
           <div className="animate-fade-in-left order-2 md:order-1">
             {/* Status badge */}
             <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+              className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full mb-3 xs:mb-4 sm:mb-6"
               style={{
                 background: "rgba(0,245,255,0.08)",
                 border: "1px solid rgba(0,245,255,0.15)",
@@ -285,12 +285,12 @@ function HomePage() {
                 className="w-2 h-2 rounded-full animate-pulse"
                 style={{ background: "#ADFF2F" }}
               />
-              <span className="text-sm text-primary">
+              <span className="text-xs sm:text-sm text-primary">
                 Open to opportunities
               </span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-3 xs:mb-4 sm:mb-6">
               <span className="text-text-primary">Hi, I&apos;m</span>
               <br />
               <span className="gradient-text-primary">
@@ -298,7 +298,7 @@ function HomePage() {
               </span>
             </h1>
 
-            <p className="text-text-secondary text-lg leading-relaxed mb-8 max-w-lg">
+            <p className="text-text-secondary text-sm xs:text-base sm:text-lg leading-relaxed mb-5 xs:mb-6 sm:mb-8 max-w-lg">
               A sixth-semester Information Systems student at{" "}
               <span className="text-primary font-medium">
                 Bina Nusantara University
@@ -314,13 +314,13 @@ function HomePage() {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-col xs:flex-row gap-2.5 xs:gap-3 sm:gap-4 mb-5 xs:mb-6 sm:mb-8 w-full xs:w-auto">
               <a
                 href="/Documents/CV.pdf"
                 download
-                className="btn-primary inline-flex items-center gap-2 text-sm no-underline"
+                className="btn-primary inline-flex items-center justify-center xs:justify-start gap-2 text-xs sm:text-sm no-underline w-full xs:w-auto"
               >
-                <Download size={18} />
+                <Download size={14} />
                 Download CV
               </a>
               <button
@@ -329,15 +329,15 @@ function HomePage() {
                     .getElementById("skills")
                     ?.scrollIntoView({ behavior: "smooth" })
                 }
-                className="btn-secondary inline-flex items-center gap-2 text-sm cursor-pointer"
+                className="btn-secondary inline-flex items-center justify-center xs:justify-start gap-2 text-xs sm:text-sm cursor-pointer w-full xs:w-auto"
               >
                 View Skills
-                <ChevronRight size={18} />
+                <ChevronRight size={14} />
               </button>
             </div>
 
             {/* Quick stats */}
-            <div className="flex flex-wrap gap-4 sm:gap-8 mt-10">
+            <div className="flex flex-col xs:flex-row flex-wrap gap-4 xs:gap-5 sm:gap-6 md:gap-8 mt-6 xs:mt-8 sm:mt-10">
               <StatBadge value="6th" label="Semester" />
               <StatBadge value={PROJECTS_DATA.length.toString()} label="Projects" />
               <StatBadge value={CERTIFICATES_DATA.length.toString()} label="Certificates" />
@@ -345,11 +345,11 @@ function HomePage() {
           </div>
 
           {/* Right Column — Profile Image */}
-          <div className="flex justify-center order-1 md:order-2 animate-fade-in-right">
+          <div className="flex justify-center order-1 md:order-2 animate-fade-in-right mt-4 xs:mt-5 sm:mt-6 md:mt-0">
             <div className="relative">
               {/* Decorative orbit rings */}
               <div
-                className="absolute inset-0 rounded-full w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] lg:w-[400px] lg:h-[400px]"
+                className="absolute inset-0 rounded-full w-[180px] h-[180px] xs:w-[220px] xs:h-[220px] sm:w-[280px] sm:h-[280px] md:w-[320px] md:h-[320px] lg:w-[380px] lg:h-[380px] pointer-events-none"
                 style={{
                   margin: "auto",
                   top: 0,
@@ -358,42 +358,69 @@ function HomePage() {
                   right: 0,
                 }}
               >
+                {/* Ring 1 - Outer */}
                 <div
-                  className="absolute w-4 h-4 rounded-full"
-                  style={{
-                    background: "#00F5FF",
-                    boxShadow: "0 0 15px rgba(0,245,255,0.6)",
-                    animation: "orbit 8s linear infinite",
-                    top: "50%",
-                    left: "50%",
+                  className="absolute inset-0 rounded-full"
+                  style={{ 
+                    border: "1px dashed rgba(0,245,255,0.3)",
+                    animation: "rotateGlow 8s linear infinite" 
                   }}
-                />
+                >
+                  <div
+                    className="absolute w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4 rounded-full"
+                    style={{
+                      background: "#00F5FF",
+                      boxShadow: "0 0 15px rgba(0,245,255,0.6)",
+                      top: "-6px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                    }}
+                  />
+                </div>
+                {/* Ring 2 - Middle */}
                 <div
-                  className="absolute w-3 h-3 rounded-full"
-                  style={{
-                    background: "#A855F7",
-                    boxShadow: "0 0 15px rgba(168,85,247,0.6)",
-                    animation: "orbit 12s linear infinite reverse",
-                    top: "50%",
-                    left: "50%",
+                  className="absolute inset-[8px] xs:inset-[10px] sm:inset-[15px] md:inset-[18px] lg:inset-[20px] rounded-full"
+                  style={{ 
+                    border: "1px dashed rgba(168,85,247,0.3)",
+                    animation: "rotateGlow 12s linear infinite reverse" 
                   }}
-                />
+                >
+                  <div
+                    className="absolute w-2.5 h-2.5 xs:w-3 xs:h-3 sm:w-3.5 sm:h-3.5 rounded-full"
+                    style={{
+                      background: "#A855F7",
+                      boxShadow: "0 0 15px rgba(168,85,247,0.6)",
+                      bottom: "-5px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                    }}
+                  />
+                </div>
+                {/* Ring 3 - Inner */}
                 <div
-                  className="absolute w-2 h-2 rounded-full"
-                  style={{
-                    background: "#ADFF2F",
-                    boxShadow: "#00F5FF",
-                    animation: "orbit 16s linear infinite",
-                    top: "50%",
-                    left: "50%",
+                  className="absolute inset-[16px] xs:inset-[18px] sm:inset-[24px] md:inset-[30px] lg:inset-[40px] rounded-full"
+                  style={{ 
+                    border: "1px dashed rgba(173,255,47,0.3)",
+                    animation: "rotateGlow 16s linear infinite" 
                   }}
-                />
+                >
+                  <div
+                    className="absolute w-2 h-2 xs:w-2.5 xs:h-2.5 rounded-full"
+                    style={{
+                      background: "#ADFF2F",
+                      boxShadow: "0 0 10px #ADFF2F",
+                      top: "50%",
+                      right: "-3px",
+                      transform: "translateY(-50%)",
+                    }}
+                  />
+                </div>
               </div>
 
               {/* Profile image */}
               <div className="profile-ring">
                 <div
-                  className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden"
+                  className="relative w-40 h-40 xs:w-48 xs:h-48 sm:w-60 sm:h-60 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden"
                   style={{
                     border: "3px solid rgba(15,23,42,0.8)",
                   }}
@@ -403,6 +430,7 @@ function HomePage() {
                     alt="Hernandia Rashta R"
                     fill
                     priority
+                    sizes="(max-width: 480px) 160px, (max-width: 640px) 192px, (max-width: 768px) 240px, (max-width: 1024px) 288px, 320px"
                     className="object-cover"
                   />
                 </div>
@@ -413,81 +441,81 @@ function HomePage() {
       </section>
 
       {/* SKILLS */}
-      <section id="skills" className="mt-24 animate-fade-in-up delay-300">
-        <div className="flex items-center gap-4 mb-10">
-          <h2 className="text-3xl font-bold section-heading gradient-text-primary">
+      <section id="skills" className="mt-16 sm:mt-20 md:mt-24 lg:mt-32 animate-fade-in-up delay-300">
+        <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8 md:mb-10">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold section-heading gradient-text-primary">
             Tech Stack & Skills
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-4">
+        <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 gap-2 sm:gap-3 md:gap-4">
           <SkillCard
-            icon={<FaHtml5 size={36} />}
+            icon={<FaHtml5 size={28} />}
             name="HTML"
             color="#E44D26"
           />
           <SkillCard
-            icon={<FaCss3Alt size={36} />}
+            icon={<FaCss3Alt size={28} />}
             name="CSS"
             color="#1572B6"
           />
           <SkillCard
-            icon={<FaJsSquare size={36} />}
+            icon={<FaJsSquare size={28} />}
             name="JavaScript"
             color="#F0DB4F"
           />
           <SkillCard
-            icon={<FaReact size={36} />}
+            icon={<FaReact size={28} />}
             name="React"
             color="#61DAFB"
           />
           <SkillCard
-            icon={<SiNextdotjs size={36} />}
+            icon={<SiNextdotjs size={28} />}
             name="Next.js"
             color="#ffffff"
           />
           <SkillCard
-            icon={<SiTailwindcss size={36} />}
+            icon={<SiTailwindcss size={28} />}
             name="Tailwind"
             color="#38BDF8"
           />
           <SkillCard
-            icon={<SiRedux size={36} />}
+            icon={<SiRedux size={28} />}
             name="Redux"
             color="#764ABC"
           />
           <SkillCard
-            icon={<FaNodeJs size={36} />}
+            icon={<FaNodeJs size={28} />}
             name="Node.js"
             color="#68A063"
           />
           <SkillCard
-            icon={<FaFigma size={36} />}
+            icon={<FaFigma size={28} />}
             name="Figma"
             color="#A259FF"
           />
           <SkillCard
-            icon={<SiCanva size={36} />}
+            icon={<SiCanva size={28} />}
             name="Canva"
             color="#00C4CC"
           />
           <SkillCard
-            icon={<SiVisualparadigm size={36} />}
+            icon={<SiVisualparadigm size={28} />}
             name="Visual Paradigm"
             color="#E3001B"
           />
           <SkillCard
-            icon={<SiLaravel size={36} />}
+            icon={<SiLaravel size={28} />}
             name="Laravel"
             color="#E3001B"
           />
           <SkillCard
-            icon={<SiPhp size={36} />}
+            icon={<SiPhp size={28} />}
             name="PHP"
             color="#4F5B93"
           />
           <SkillCard
-            icon={<SiMysql size={36} />}
+            icon={<SiMysql size={28} />}
             name="MySQL"
             color="#4F5B93"
           />
@@ -495,9 +523,9 @@ function HomePage() {
       </section>
 
       {/* GITHUB CONTRIBUTIONS */}
-      <section className="mt-32 animate-fade-in-up">
-        <div className="flex items-center gap-4 mb-8">
-          <h2 className="text-3xl font-bold section-heading gradient-text-primary">
+      <section className="mt-16 sm:mt-20 md:mt-24 lg:mt-32 animate-fade-in-up">
+        <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold section-heading gradient-text-primary">
             GitHub Contributions
           </h2>
         </div>
@@ -511,18 +539,18 @@ function HomePage() {
 function ProjectsPage() {
   return (
     <div className="animate-fade-in-up">
-      <h1 className="text-4xl font-bold section-heading text-white mb-4">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold section-heading text-white mb-3 sm:mb-4">
         My Projects
       </h1>
-      <p className="text-text-secondary mb-12 max-w-2xl">
+      <p className="text-text-secondary text-sm sm:text-base mb-8 sm:mb-10 md:mb-12 max-w-2xl">
         Explore my latest projects showcasing expertise in full-stack development, UI/UX design, and systems analysis.
       </p>
 
-      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
         {PROJECTS_DATA.map((project, i) => (
           <div
             key={i}
-            className="glass-card p-6 group hover:translate-y-[-4px] transition-all duration-300"
+            className="glass-card p-5 sm:p-6 group hover:translate-y-[-4px] transition-all duration-300"
             style={{
               background: "rgba(0,245,255,0.05)",
               borderColor: "rgba(0,245,255,0.15)",
@@ -532,31 +560,31 @@ function ProjectsPage() {
           >
             {/* Project icon placeholder */}
             <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
+              className="w-10 h-10 xs:w-12 xs:h-12 rounded-xl flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300"
               style={{
                 background: "linear-gradient(135deg, rgba(0,245,255,0.15), rgba(168,85,247,0.15))",
                 border: "1px solid rgba(0,245,255,0.2)",
               }}
             >
               <FolderKanban
-                size={22}
+                size={18}
                 className="text-primary"
               />
             </div>
 
-            <h3 className="text-xl font-bold text-text-primary mb-2 group-hover:text-primary transition-colors">
+            <h3 className="text-base sm:text-lg md:text-xl font-bold text-text-primary mb-2 group-hover:text-primary transition-colors">
               {project.title}
             </h3>
-            <p className="text-text-secondary text-sm leading-relaxed mb-4">
+            <p className="text-text-secondary text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4">
               {project.desc}
             </p>
 
             {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs px-3 py-1 rounded-full font-medium"
+                  className="text-xs px-2.5 sm:px-3 py-1 rounded-full font-medium"
                   style={{
                     background: "rgba(0,245,255,0.08)",
                     color: "#00F5FF",
@@ -568,8 +596,8 @@ function ProjectsPage() {
               ))}
             </div>
 
-            <button className="inline-flex items-center gap-2 text-sm text-primary font-medium hover:gap-3 transition-all cursor-pointer bg-transparent border-none hover:text-secondary">
-              View Project <ExternalLink size={14} />
+            <button className="inline-flex items-center gap-2 text-xs sm:text-sm text-primary font-medium hover:gap-3 transition-all cursor-pointer bg-transparent border-none hover:text-secondary">
+              View Project <ExternalLink size={12} />
             </button>
           </div>
         ))}
@@ -582,17 +610,17 @@ function ProjectsPage() {
 function AboutPage() {
   return (
     <div className="animate-fade-in-up">
-      <h1 className="text-4xl font-bold section-heading text-white mb-4">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold section-heading text-white mb-3 sm:mb-4">
         About Me
       </h1>
-      <p className="text-text-secondary mb-12 max-w-2xl">
+      <p className="text-text-secondary text-sm sm:text-base mb-8 sm:mb-10 md:mb-12 max-w-2xl">
         Get to know me better and discover my journey in technology and design.
       </p>
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Main about card */}
-        <div className="lg:col-span-2 glass-card p-6 sm:p-8">
-          <p className="text-text-secondary text-lg leading-relaxed mb-6">
+        <div className="lg:col-span-2 glass-card p-5 sm:p-6 md:p-8">
+          <p className="text-text-secondary text-sm sm:text-base md:text-lg leading-relaxed mb-4 sm:mb-6">
             I am a passionate Information Systems student with a keen interest in{" "}
             <span className="text-primary font-medium">UI/UX Design</span> and{" "}
             <span className="text-secondary font-medium">
@@ -601,7 +629,7 @@ function AboutPage() {
             . I have honed my skills in using design tools such as Figma, Canva,
             Visual Paradigm, and Microsoft Office.
           </p>
-          <p className="text-text-secondary leading-relaxed">
+          <p className="text-text-secondary text-sm sm:text-base leading-relaxed">
             I am eager to apply my knowledge and creativity in real-world
             projects through an internship program, where I can further develop
             my professional abilities and contribute to innovative solutions.
@@ -609,7 +637,7 @@ function AboutPage() {
         </div>
 
         {/* Info cards */}
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           <InfoCard
             label="Location"
             value="Semarang, Indonesia"
@@ -629,11 +657,11 @@ function AboutPage() {
       </div>
 
       {/* Tools I use */}
-      <div className="mt-12">
-        <h3 className="text-xl font-bold text-text-primary mb-6">
+      <div className="mt-10 sm:mt-12">
+        <h3 className="text-lg sm:text-xl font-bold text-text-primary mb-4 sm:mb-6">
           Tools & Technologies
         </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 sm:gap-3">
           {[
             "Figma",
             "Canva",
@@ -646,7 +674,7 @@ function AboutPage() {
           ].map((tool) => (
             <div
               key={tool}
-              className="px-4 py-3 rounded-xl text-sm font-medium glass-card hover:translate-y-[-2px] transition-all duration-300"
+              className="px-3 py-2.5 xs:px-4 xs:py-3 rounded-xl text-xs xs:text-sm font-medium glass-card hover:translate-y-[-2px] transition-all duration-300"
               style={{
                 background: "rgba(0,245,255,0.08)",
                 color: "#00F5FF",
@@ -666,14 +694,14 @@ function AboutPage() {
 function EducationPage() {
   return (
     <div className="animate-fade-in-up">
-      <h1 className="text-4xl font-bold section-heading gradient-text-primary mb-4">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold section-heading gradient-text-primary mb-3 sm:mb-4">
         Education
       </h1>
-      <p className="text-text-secondary mb-12 max-w-2xl">
+      <p className="text-text-secondary text-sm sm:text-base mb-8 sm:mb-10 md:mb-12 max-w-2xl">
         My academic journey and achievements in Information Systems and design.
       </p>
 
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         <EducationCard
           institution="Bina Nusantara University"
           degree="S1 — Information Systems"
@@ -692,11 +720,11 @@ function EducationPage() {
       </div>
 
       {/* Skills Section */}
-      <div className="mt-12">
-        <h3 className="text-xl font-bold text-text-primary mb-6">
+      <div className="mt-10 sm:mt-12">
+        <h3 className="text-lg sm:text-xl font-bold text-text-primary mb-4 sm:mb-6">
           Key Skills Developed
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <div
             className="glass-card p-4"
             style={{
@@ -704,8 +732,8 @@ function EducationPage() {
               border: "1px solid rgba(0,245,255,0.1)",
             }}
           >
-            <p className="font-semibold text-primary mb-2">Technical</p>
-            <p className="text-sm text-text-secondary">Web Development, Database Design, System Architecture, API Development</p>
+            <p className="font-semibold text-primary mb-2 text-sm sm:text-base">Technical</p>
+            <p className="text-xs sm:text-sm text-text-secondary">Web Development, Database Design, System Architecture, API Development</p>
           </div>
           <div
             className="glass-card p-4"
@@ -714,8 +742,8 @@ function EducationPage() {
               border: "1px solid rgba(168,85,247,0.1)",
             }}
           >
-            <p className="font-semibold text-secondary mb-2">Design</p>
-            <p className="text-sm text-text-secondary">UI/UX Design, Wireframing, Prototyping, Visual Design Systems</p>
+            <p className="font-semibold text-secondary mb-2 text-sm sm:text-base">Design</p>
+            <p className="text-xs sm:text-sm text-text-secondary">UI/UX Design, Wireframing, Prototyping, Visual Design Systems</p>
           </div>
         </div>
       </div>
@@ -748,15 +776,15 @@ function ExperiencePage() {
 
   return (
     <div className="animate-fade-in-up">
-      <h1 className="text-4xl font-bold section-heading gradient-text-primary mb-4">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold section-heading gradient-text-primary mb-3 sm:mb-4">
         Experience & Activities
       </h1>
-      <p className="text-text-secondary mb-12 max-w-2xl">
+      <p className="text-text-secondary text-sm sm:text-base mb-8 sm:mb-10 md:mb-12 max-w-2xl">
         My involvement in educational, organizational, and community projects.
       </p>
 
       {/* Timeline */}
-      <div className="relative pl-8">
+      <div className="relative pl-6 sm:pl-8">
         {/* Timeline line */}
         <div
           className="absolute left-0 top-0 bottom-0 w-[2px]"
@@ -765,7 +793,7 @@ function ExperiencePage() {
           }}
         />
 
-        <div className="space-y-10">
+        <div className="space-y-6 sm:space-y-8 md:space-y-10">
           {experiences.map((exp, i) => (
             <div
               key={i}
@@ -774,34 +802,34 @@ function ExperiencePage() {
             >
               {/* Timeline dot */}
               <div
-                className="absolute -left-8 top-2 w-5 h-5 rounded-full"
+                className="absolute -left-6 sm:-left-8 top-2 w-4 h-4 sm:w-5 sm:h-5 rounded-full"
                 style={{
                   background: exp.color,
                   boxShadow: `0 0 20px ${exp.color}88, inset 0 0 10px ${exp.color}44`,
-                  left: "-0.62rem",
+                  transform: "translateX(calc(1px - 50%))",
                 }}
               />
 
               {/* Card */}
               <div
-                className="glass-card p-6 ml-4 hover:translate-x-1 transition-transform duration-300"
+                className="glass-card p-4 sm:p-5 md:p-6 ml-2 sm:ml-4 hover:translate-x-1 transition-transform duration-300"
                 style={{
                   borderLeft: `3px solid ${exp.color}`,
                   background: "rgba(15,23,42,0.6)",
                 }}
               >
-                <div className="flex items-start justify-between mb-2">
+                <div className="flex items-start justify-between gap-2 mb-2">
                   <h3
-                    className="text-xl font-bold"
+                    className="text-base sm:text-lg md:text-xl font-bold"
                     style={{ color: exp.color }}
                   >
                     {exp.title}
                   </h3>
-                  <span className="text-xs font-semibold text-text-muted bg-neutral-light px-2 py-1 rounded">
+                  <span className="text-xs font-semibold text-text-muted bg-neutral-light px-2 py-1 rounded flex-shrink-0">
                     {exp.year}
                   </span>
                 </div>
-                <p className="text-text-secondary leading-relaxed">
+                <p className="text-text-secondary text-xs sm:text-sm leading-relaxed">
                   {exp.desc}
                 </p>
               </div>
@@ -823,14 +851,14 @@ function CertificatesPage() {
   return (
     <>
       <div className="animate-fade-in-up">
-        <h1 className="text-4xl font-bold section-heading gradient-text-primary mb-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold section-heading gradient-text-primary mb-3 sm:mb-4">
           Certificates & Achievements
         </h1>
-        <p className="text-text-secondary mb-12 max-w-2xl">
+        <p className="text-text-secondary text-sm sm:text-base mb-8 sm:mb-10 md:mb-12 max-w-2xl">
           Professional certificates and credentials earned through various programs and organizations.
         </p>
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           {CERTIFICATES_DATA.map((cert, i) => (
             <div
               key={i}
@@ -841,12 +869,13 @@ function CertificatesPage() {
               }}
             >
               {/* Image */}
-              <div className="relative w-full h-80 overflow-hidden bg-neutral">
+              <div className="relative w-full h-60 sm:h-72 md:h-80 lg:h-96 overflow-hidden bg-neutral">
                 <Image
                   src={cert.src}
                   alt={cert.alt}
                   fill
                   priority
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 {/* Overlay on hover */}
@@ -858,16 +887,16 @@ function CertificatesPage() {
                   }}
                   onClick={() => setLightbox(cert)}
                 >
-                  <span className="text-primary font-medium text-sm flex items-center gap-2 bg-neutral-dark px-4 py-2 rounded-lg">
-                    <ExternalLink size={16} /> View Full Size
+                  <span className="text-primary font-medium text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 bg-neutral-dark px-3 sm:px-4 py-2 rounded-lg">
+                    <ExternalLink size={14} /> View Full Size
                   </span>
                 </div>
               </div>
 
               {/* Label */}
-              <div className="p-4">
-                <p className="text-text-primary font-semibold">{cert.alt}</p>
-                <p className="text-text-muted text-sm">Professional Certificate</p>
+              <div className="p-3 sm:p-4">
+                <p className="text-text-primary font-semibold text-sm sm:text-base">{cert.alt}</p>
+                <p className="text-text-muted text-xs sm:text-sm">Professional Certificate</p>
               </div>
             </div>
           ))}
@@ -1002,7 +1031,7 @@ function SkillCard({
 }) {
   return (
     <div
-      className="glass-card p-5 flex flex-col items-center gap-3 group cursor-default"
+      className="glass-card p-3 xs:p-4 sm:p-5 flex flex-col items-center gap-2 xs:gap-2.5 sm:gap-3 group cursor-default hover:translate-y-[-2px] transition-all duration-300"
       style={{
         ["--skill-color" as string]: color,
       }}
@@ -1013,7 +1042,7 @@ function SkillCard({
       >
         {icon}
       </div>
-      <p className="text-sm font-medium text-text-secondary group-hover:text-text-primary transition-colors">
+      <p className="text-xs xs:text-xs sm:text-sm font-medium text-text-secondary group-hover:text-text-primary transition-colors text-center">
         {name}
       </p>
     </div>
@@ -1024,8 +1053,8 @@ function SkillCard({
 function StatBadge({ value, label }: { value: string; label: string }) {
   return (
     <div>
-      <p className="text-2xl font-bold gradient-text-primary">{value}</p>
-      <p className="text-xs text-text-muted">{label}</p>
+      <p className="text-lg xs:text-xl sm:text-2xl font-bold gradient-text-primary">{value}</p>
+      <p className="text-xs xs:text-xs sm:text-sm text-text-muted">{label}</p>
     </div>
   );
 }
@@ -1242,16 +1271,17 @@ function GithubStatsRealtime() {
   return (
     <div className="w-full mt-12 overflow-x-auto pb-4">
       <div 
-        className="glass-card p-6 inline-block min-w-full"
+        className="glass-card p-3 xs:p-4 sm:p-6 inline-block min-w-full"
         style={{
           background: "rgba(15, 23, 42, 0.6)",
           border: "1px solid rgba(0, 245, 255, 0.1)",
         }}
       >
         {/* Month labels */}
-        <div className="flex items-start">
+        <div className="flex items-start overflow-x-auto">
           {/* Spacer for day labels column */}
-          <div style={{ minWidth: "42px" }} />
+          <div style={{ minWidth: "32px" }} className="xs:block hidden" />
+          <div style={{ minWidth: "24px" }} className="xs:hidden" />
           
           {/* Month labels row */}
           <div className="flex" style={{ gap: `${CELL_GAP}px` }}>
@@ -1274,19 +1304,20 @@ function GithubStatsRealtime() {
         </div>
 
         {/* Contribution grid */}
-        <div className="flex gap-1 mt-4">
+        <div className="flex gap-1 mt-2 xs:mt-4 overflow-x-auto">
           {/* Day labels column */}
           <div className="flex flex-col gap-0.5">
             {dayLabels.map((day) => (
               <div
                 key={day}
-                className="flex items-center justify-center"
+                className="flex items-center justify-center text-xs xs:text-sm"
                 style={{
-                  minWidth: "42px",
+                  minWidth: "24px",
                   height: `${CELL_SIZE}px`,
                 }}
               >
-                <span className="text-xs text-text-muted font-medium">{day}</span>
+                <span className="text-text-muted font-medium hidden xs:inline">{day}</span>
+                <span className="text-text-muted font-medium xs:hidden">{day[0]}</span>
               </div>
             ))}
           </div>
@@ -1314,27 +1345,27 @@ function GithubStatsRealtime() {
         </div>
 
         {/* Legend */}
-        <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-700">
+        <div className="flex items-center gap-2 mt-3 xs:mt-4 pt-3 xs:pt-4 border-t border-gray-700 flex-wrap">
           <span className="text-xs text-text-muted">Less</span>
           <div className="flex gap-0.5">
             <div
-              className="w-3 h-3 rounded-sm"
+              className="w-2.5 h-2.5 xs:w-3 xs:h-3 rounded-sm"
               style={{ backgroundColor: "rgba(255, 255, 255, 0.1)" }}
             />
             <div
-              className="w-3 h-3 rounded-sm"
+              className="w-2.5 h-2.5 xs:w-3 xs:h-3 rounded-sm"
               style={{ backgroundColor: "rgba(173, 255, 47, 0.3)" }}
             />
             <div
-              className="w-3 h-3 rounded-sm"
+              className="w-2.5 h-2.5 xs:w-3 xs:h-3 rounded-sm"
               style={{ backgroundColor: "rgba(173, 255, 47, 0.5)" }}
             />
             <div
-              className="w-3 h-3 rounded-sm"
+              className="w-2.5 h-2.5 xs:w-3 xs:h-3 rounded-sm"
               style={{ backgroundColor: "rgba(173, 255, 47, 0.7)" }}
             />
             <div
-              className="w-3 h-3 rounded-sm"
+              className="w-2.5 h-2.5 xs:w-3 xs:h-3 rounded-sm"
               style={{ backgroundColor: "rgba(173, 255, 47, 1)" }}
             />
           </div>
@@ -1342,26 +1373,32 @@ function GithubStatsRealtime() {
         </div>
 
         {/* Stats row */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-6 pt-6 border-t border-gray-700">
+        <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 lg:grid-cols-5 gap-2 xs:gap-3 sm:gap-4 mt-4 xs:mt-6 pt-4 xs:pt-6 border-t border-gray-700">
           <div>
-            <p className="text-2xl font-bold gradient-text-primary">{stats.repos}</p>
-            <p className="text-xs text-text-muted">Repositories</p>
+            <p className="text-lg xs:text-xl sm:text-2xl font-bold gradient-text-primary">{stats.repos}</p>
+            <p className="text-xs text-text-muted mt-0.5">
+              <span className="xs:hidden">Repos</span>
+              <span className="hidden xs:inline">Repositories</span>
+            </p>
           </div>
           <div>
-            <p className="text-2xl font-bold gradient-text-primary">{stats.followers}</p>
-            <p className="text-xs text-text-muted">Followers</p>
+            <p className="text-lg xs:text-xl sm:text-2xl font-bold gradient-text-primary">{stats.followers}</p>
+            <p className="text-xs text-text-muted mt-0.5">Followers</p>
           </div>
           <div>
-            <p className="text-2xl font-bold gradient-text-primary">{stats.contributions}</p>
-            <p className="text-xs text-text-muted">Contributions</p>
+            <p className="text-lg xs:text-xl sm:text-2xl font-bold gradient-text-primary">{stats.contributions}</p>
+            <p className="text-xs text-text-muted mt-0.5">
+              <span className="xs:hidden">Contribs</span>
+              <span className="hidden xs:inline">Contributions</span>
+            </p>
+          </div>
+          <div className="col-span-2 xs:col-span-1">
+            <p className="text-lg xs:text-xl sm:text-2xl font-bold gradient-text-primary">{todayCommit}</p>
+            <p className="text-xs text-text-muted mt-0.5">Today</p>
           </div>
           <div>
-            <p className="text-2xl font-bold gradient-text-primary">{todayCommit}</p>
-            <p className="text-xs text-text-muted">Today</p>
-          </div>
-          <div>
-            <p className="text-2xl font-bold gradient-text-primary">🔥 {streak}</p>
-            <p className="text-xs text-text-muted">Streak</p>
+            <p className="text-lg xs:text-xl sm:text-2xl font-bold gradient-text-primary">🔥 {streak}</p>
+            <p className="text-xs text-text-muted mt-0.5">Streak</p>
           </div>
         </div>
       </div>
