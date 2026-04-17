@@ -30,6 +30,7 @@ import {
   FaInstagram,
   FaEnvelope,
   FaTiktok,
+  FaKeyboard,
 } from "react-icons/fa";
 
 import { SiNextdotjs, SiTailwindcss, SiRedux, SiCanva, SiVisualparadigm, SiLaravel, SiPhp, SiMysql } from "react-icons/si";
@@ -416,8 +417,9 @@ function HomePage() {
 
       {/* SKILLS */}
       <section id="skills" className="mt-16 sm:mt-20 md:mt-24 lg:mt-32 animate-fade-in-up delay-300">
-        <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8 md:mb-10">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold section-heading gradient-text-primary">
+        <div className="flex items-center gap-3 mb-6 px-2 font-mono">
+          <Sparkles size={24} color="#00F5FF" />
+          <h2 className="text-xl sm:text-2xl font-bold gradient-text-primary">
             Tech Stack & Skills
           </h2>
         </div>
@@ -498,12 +500,18 @@ function HomePage() {
 
       {/* GITHUB CONTRIBUTIONS */}
       <section className="mt-16 sm:mt-20 md:mt-24 lg:mt-32 animate-fade-in-up">
-        <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold section-heading gradient-text-primary">
+        <div className="flex items-center gap-3 mb-6 px-2 font-mono">
+          <FaGithub size={24} color="#00F5FF" />
+          <h2 className="text-xl sm:text-2xl font-bold gradient-text-primary">
             GitHub Contributions
           </h2>
         </div>
         <GithubStatsRealtime />
+      </section>
+
+      {/* TYPING STATS */}
+      <section className="mt-16 sm:mt-20 md:mt-24 animate-fade-in-up">
+        <MonkeyTypeStatsRealtime />
       </section>
     </div>
   );
@@ -513,7 +521,7 @@ function HomePage() {
 function ProjectsPage() {
   return (
     <div className="animate-fade-in-up">
-      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold section-heading text-white mb-3 sm:mb-4">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold section-heading gradient-text-primary mb-3 sm:mb-4">
         My Projects
       </h1>
       <p className="text-text-secondary text-sm sm:text-base mb-8 sm:mb-10 md:mb-12 max-w-2xl">
@@ -584,7 +592,7 @@ function ProjectsPage() {
 function AboutPage() {
   return (
     <div className="animate-fade-in-up">
-      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold section-heading text-white mb-3 sm:mb-4">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold section-heading gradient-text-primary mb-3 sm:mb-4">
         About Me
       </h1>
       <p className="text-text-secondary text-sm sm:text-base mb-8 sm:mb-10 md:mb-12 max-w-2xl">
@@ -870,7 +878,7 @@ function CertificatesPage() {
               {/* Label */}
               <div className="p-3 sm:p-4">
                 <p className="text-text-primary font-semibold text-sm sm:text-base">{cert.alt}</p>
-                <p className="text-text-muted text-xs sm:text-sm">Professional Certificate</p>
+                <p className="text-text-muted text-xs sm:text-sm">Coordinator of Event Division</p>
               </div>
             </div>
           ))}
@@ -1010,7 +1018,7 @@ function LetsConnectWidget() {
       <p className="text-xs text-text-muted mb-3">
         Open for opportunities
       </p>
-      <div className="flex gap-3 flex-wrap">
+      <div className="flex gap-2.5 flex-wrap">
         <SocialIcon
           icon={<FaGithub size={16} />}
           href="https://github.com/Rashta-2911"
@@ -1178,6 +1186,239 @@ function EducationCard({
           </p>
           <p className="text-xs text-text-muted mt-1 mb-3">{period}</p>
           <p className="text-text-secondary text-sm leading-relaxed">{desc}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MonkeyTypeStatsRealtime() {
+  const [data, setData] = useState<any>(null);
+  const [range, setRange] = useState("last 12 months");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Helper to get YYYY-MM-DD in local time
+  const getLocalDateString = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  useEffect(() => {
+    fetch("/API/MonkeyType")
+      .then((res) => res.json())
+      .then((json) => {
+        setData(json);
+      })
+      .catch((err) => console.error("Failed to fetch MonkeyType stats:", err));
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const stats = data?.profile;
+  const results = data?.results || [];
+
+  // Group results by local date
+  const activityMap: Record<string, number> = {};
+  results.forEach((res: any) => {
+    const dateStr = getLocalDateString(new Date(res.timestamp));
+    activityMap[dateStr] = (activityMap[dateStr] || 0) + 1;
+  });
+
+  const getTimeBest = (seconds: number) => stats?.personalBests?.time?.[seconds]?.[0];
+  const getWordBest = (words: number) => stats?.personalBests?.words?.[words]?.[0];
+
+  const t15 = getTimeBest(15);
+  const t30 = getTimeBest(30);
+  const t60 = getTimeBest(60);
+  const t120 = getTimeBest(120);
+
+  const w10 = getWordBest(10);
+  const w25 = getWordBest(25);
+  const w50 = getWordBest(50);
+  const w100 = getWordBest(100);
+
+  const StatColumn = ({ label, data }: { label: string, data: any }) => (
+    <div className="flex flex-col items-center justify-start min-w-[60px] sm:min-w-[70px]">
+      <span className="text-[10px] sm:text-xs text-slate-500 mb-2 font-mono whitespace-nowrap">{label}</span>
+      <span className="text-2xl sm:text-3xl font-bold transition-all duration-300" 
+            style={{ color: data ? "#00F5FF" : "#64748B", textShadow: data ? "0 0 10px rgba(0,245,255,0.3)" : "none" }}>
+        {data ? Math.round(data.wpm) : "-"}
+      </span>
+      <span className="text-xs sm:text-sm font-medium mt-0.5 transition-all duration-300" 
+            style={{ color: data ? "#A855F7" : "#64748B" }}>
+        {data ? `${Math.round(data.acc)}%` : "-"}
+      </span>
+    </div>
+  );
+
+  // Heatmap Logic
+  const today = new Date();
+  const todayStr = getLocalDateString(today);
+  const weeks: Date[][] = [];
+  
+  if (range === "2026") {
+    const startOfYear = new Date(2026, 0, 1);
+    const firstDay = new Date(startOfYear);
+    firstDay.setDate(firstDay.getDate() - firstDay.getDay());
+    
+    for (let w = 0; w < 53; w++) {
+      const week: Date[] = [];
+      for (let d = 0; d < 7; d++) {
+        const day = new Date(firstDay);
+        day.setDate(day.getDate() + (w * 7) + d);
+        week.push(day);
+      }
+      weeks.push(week);
+    }
+  } else {
+    const startPoint = new Date(today);
+    startPoint.setFullYear(startPoint.getFullYear() - 1);
+    const firstDay = new Date(startPoint);
+    firstDay.setHours(0, 0, 0, 0);
+    firstDay.setDate(firstDay.getDate() - firstDay.getDay());
+
+    for (let w = 0; w < 53; w++) {
+      const week: Date[] = [];
+      for (let d = 0; d < 7; d++) {
+        const day = new Date(firstDay);
+        day.setDate(day.getDate() + (w * 7) + d);
+        week.push(day);
+      }
+      weeks.push(week);
+    }
+  }
+
+  const testsThisYear = Object.keys(activityMap).reduce((acc, date) => {
+    return date.startsWith("2026") ? acc + activityMap[date] : acc;
+  }, 0);
+
+  return (
+    <div className="w-full overflow-x-hidden font-mono mt-6 sm:mt-8">
+      <div className="flex items-center gap-3 mb-6 px-2">
+        <FaKeyboard size={24} color="#00F5FF" />
+        <h3 className="text-xl sm:text-2xl font-bold gradient-text-primary">MonkeyType Profile</h3>
+        {!data && <span className="w-2 h-2 rounded-full bg-cyan-400/50 animate-pulse ml-2" />}
+      </div>
+
+      <div className="flex flex-col gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 w-full">
+          <div className="rounded-xl p-5 sm:p-6 flex justify-between items-start w-full relative group transition-colors duration-300 hover:bg-slate-800/40" 
+               style={{ background: "#0F172A", border: "1px solid rgba(0, 245, 255, 0.1)" }}>
+            <StatColumn label="15 seconds" data={t15} />
+            <StatColumn label="30 seconds" data={t30} />
+            <StatColumn label="60 seconds" data={t60} />
+            <StatColumn label="120 seconds" data={t120} />
+            <div className="absolute right-3 sm:right-4 top-3 sm:top-4 text-slate-600 transition-colors cursor-pointer hover:text-[#00F5FF]">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+            </div>
+          </div>
+
+          <div className="rounded-xl p-5 sm:p-6 flex justify-between items-start w-full relative group transition-colors duration-300 hover:bg-slate-800/40" 
+               style={{ background: "#0F172A", border: "1px solid rgba(168, 85, 247, 0.1)" }}>
+            <StatColumn label="10 words" data={w10} />
+            <StatColumn label="25 words" data={w25} />
+            <StatColumn label="50 words" data={w50} />
+            <StatColumn label="100 words" data={w100} />
+            <div className="absolute right-3 sm:right-4 top-3 sm:top-4 text-slate-600 transition-colors cursor-pointer hover:text-[#A855F7]">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-xl p-4 sm:p-6 w-full overflow-x-auto" 
+             style={{ background: "#0F172A", border: "1px solid rgba(173, 255, 47, 0.15)" }}>
+          <div className="flex justify-between items-end mb-4 min-w-max px-1">
+            <div className="flex items-center gap-4">
+              <div ref={dropdownRef} className="relative">
+                <div 
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="px-3 py-1.5 rounded flex items-center gap-2 cursor-pointer text-[11px] sm:text-xs text-slate-300 transition-colors hover:text-white select-none"
+                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}
+                >
+                  {range} 
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+
+                {dropdownOpen && (
+                  <div className="absolute left-0 top-full mt-1 w-40 rounded-lg shadow-xl z-50 overflow-hidden py-1" style={{ background: "#1E293B", border: "1px solid rgba(255,255,255,0.1)" }}>
+                    {["last 12 months", "2026"].map((opt) => (
+                      <div key={opt} onClick={() => { setRange(opt); setDropdownOpen(false); }} className={`px-3 py-2 text-[11px] sm:text-xs cursor-pointer transition-colors ${range === opt ? 'text-[#ADFF2F] bg-slate-800' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}>
+                        {opt}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <span className="text-[11px] sm:text-xs text-slate-500 font-mono tracking-wide">
+                {range === "2026" ? `${testsThisYear} tests` : (`${stats?.typingStats?.completedTests || 0} tests`)}
+              </span>
+            </div>
+            
+            <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-slate-500 font-mono tracking-wide">
+              less
+              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-sm ml-1" style={{ background: "rgba(30, 41, 59, 0.5)" }} />
+              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-sm" style={{ background: "rgba(173, 255, 47, 0.2)" }} />
+              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-sm" style={{ background: "rgba(173, 255, 47, 0.5)" }} />
+              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-sm" style={{ background: "rgba(173, 255, 47, 0.8)" }} />
+              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-sm mr-1" style={{ background: "#ADFF2F" }} />
+              more
+            </div>
+          </div>
+          
+          <div className="flex gap-1.5 sm:gap-2 min-w-max text-[10px] sm:text-xs text-slate-500 font-mono pr-2">
+            <div className="flex flex-col justify-between py-0.5 sm:py-1 pr-1 sm:pr-2 h-[84px] sm:h-[108px]">
+              <span>mon</span>
+              <span>wed</span>
+              <span>fri</span>
+            </div>
+            
+            <div className="flex gap-1">
+              {weeks.map((week, colIndex) => (
+                <div key={colIndex} className="flex flex-col gap-1">
+                  {week.map((day, rowIndex) => {
+                    const dateStr = getLocalDateString(day);
+                    const testsCount = activityMap[dateStr] || 0;
+                    const isToday = dateStr === todayStr;
+                    const isFuture = day > today && !isToday;
+                    
+                    let bg = "rgba(30, 41, 59, 0.6)"; 
+                    if (isFuture) bg = "rgba(30, 41, 59, 0.2)";
+                    else if (testsCount >= 10) bg = "#ADFF2F";
+                    else if (testsCount >= 5) bg = "rgba(173, 255, 47, 0.8)";
+                    else if (testsCount >= 3) bg = "rgba(173, 255, 47, 0.5)";
+                    else if (testsCount >= 1) bg = "rgba(173, 255, 47, 0.25)";
+
+                    const dateFormatted = day.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+                    return (
+                      <div 
+                        key={rowIndex} 
+                        className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-[2px] cursor-pointer group/cell relative"
+                        style={{ background: bg }}
+                      >
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-slate-800 text-[9px] sm:text-[10px] text-white whitespace-nowrap opacity-0 group-hover/cell:opacity-100 pointer-events-none transition-opacity z-[100] border border-slate-700 shadow-xl">
+                          {testsCount} {testsCount === 1 ? 'test' : 'tests'} on {dateFormatted}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <p className="text-[9px] sm:text-[10px] text-slate-600 text-center mt-6 tracking-wide uppercase">
+            Note: All activity data is using UTC time.
+          </p>
         </div>
       </div>
     </div>

@@ -380,7 +380,7 @@ body::before {
   position: absolute;
   inset: -4px;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, #00F5FF, #A855F7, #ADFF2F, #00F5FF);
+  background: #00F5FF;
   animation: rotateGlow 4s linear infinite;
   z-index: -1;
 }
