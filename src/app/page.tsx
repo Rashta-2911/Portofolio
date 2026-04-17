@@ -148,44 +148,8 @@ export default function MainPage() {
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="px-6 py-6">
-          <div
-            className="rounded-xl p-4"
-            style={{
-              background:
-                "linear-gradient(135deg, rgba(0,245,255,0.08), rgba(168,85,247,0.08))",
-              border: "1px solid rgba(0,245,255,0.1)",
-            }}
-          >
-            <p className="text-sm font-medium text-text-primary mb-1">
-              Let&apos;s Connect!
-            </p>
-            <p className="text-xs text-text-muted mb-3">
-              Open for opportunities
-            </p>
-            <div className="flex gap-3">
-              <SocialIcon
-                icon={<FaGithub size={16} />}
-                href="https://github.com/Rashta-2911"
-              />
-              <SocialIcon
-                icon={<FaLinkedin size={16} />}
-                href="https://www.linkedin.com/in/hernandiarashta/"
-              />
-              <SocialIcon
-                icon={<FaInstagram size={16} />}
-                href="https://www.instagram.com/hernandia_rashta/"
-              />
-              <SocialIcon
-                icon={<FaEnvelope size={16} />}
-                href="mailto: [rashta2911@gmail.com]"
-              />
-              <SocialIcon
-                icon={<FaTiktok size={16} />}
-                href="https://www.tiktok.com/@rashtarudigdo"
-              />
-            </div>
-          </div>
+        <div className="px-6 py-6 mt-auto">
+          <LetsConnectWidget />
         </div>
       </aside>
 
@@ -217,26 +181,31 @@ export default function MainPage() {
       {/* ========== MOBILE MENU OVERLAY ========== */}
       {mobileMenuOpen && (
         <div
-          className="md:hidden fixed inset-0 z-40 glass"
+          className="md:hidden fixed inset-0 z-40 glass flex flex-col"
           style={{ paddingTop: "64px" }}
         >
-          <nav className="p-4 space-y-1">
-            {navItems.map((item) => (
-              <SidebarItem
-                key={item.id}
-                icon={item.icon}
-                text={item.label}
-                active={activePage === item.id}
-                onClick={() => handleNav(item.id)}
-              />
-            ))}
-          </nav>
+          <div className="flex-1 overflow-y-auto w-full flex flex-col">
+            <nav className="p-4 space-y-1">
+              {navItems.map((item) => (
+                <SidebarItem
+                  key={item.id}
+                  icon={item.icon}
+                  text={item.label}
+                  active={activePage === item.id}
+                  onClick={() => handleNav(item.id)}
+                />
+              ))}
+            </nav>
+            <div className="p-6 mt-auto">
+              <LetsConnectWidget />
+            </div>
+          </div>
         </div>
       )}
 
       {/* ========== MAIN CONTENT ========== */}
-      <main className="flex-1 min-w-0 max-w-full md:ml-72 min-h-screen grid-pattern overflow-x-hidden">
-        <div className="w-full mx-auto px-3 sm:px-5 md:px-8 lg:px-12 py-6 sm:py-8 md:py-12 lg:py-16 mt-16 sm:mt-14 md:mt-0 overflow-hidden max-w-screen-2xl lg:mx-auto">
+      <main className="flex-1 min-w-0 max-w-full md:ml-72 min-h-screen grid-pattern overflow-x-hidden flex flex-col">
+        <div className="flex-1 w-full mx-auto px-3 sm:px-5 md:px-8 lg:px-12 py-6 sm:py-8 md:py-12 lg:py-16 mt-16 sm:mt-14 md:mt-0 overflow-hidden max-w-screen-2xl lg:mx-auto">
           {/* HOME PAGE */}
           {activePage === "home" && <HomePage />}
 
@@ -254,6 +223,11 @@ export default function MainPage() {
 
           {/* CERTIFICATES PAGE */}
           {activePage === "certificates" && <CertificatesPage />}
+        </div>
+
+        {/* Mobile footer for Let's Connect */}
+        <div className="md:hidden w-full px-4 sm:px-6 pb-8 pt-4">
+          <LetsConnectWidget />
         </div>
       </main>
     </div>
@@ -1016,6 +990,49 @@ function SidebarItem({
       </span>
       {text}
     </button>
+  );
+}
+
+/* Lets Connect Widget */
+function LetsConnectWidget() {
+  return (
+    <div
+      className="rounded-xl p-4 w-full"
+      style={{
+        background:
+          "linear-gradient(135deg, rgba(0,245,255,0.08), rgba(168,85,247,0.08))",
+        border: "1px solid rgba(0,245,255,0.1)",
+      }}
+    >
+      <p className="text-sm font-medium text-text-primary mb-1">
+        Let&apos;s Connect!
+      </p>
+      <p className="text-xs text-text-muted mb-3">
+        Open for opportunities
+      </p>
+      <div className="flex gap-3 flex-wrap">
+        <SocialIcon
+          icon={<FaGithub size={16} />}
+          href="https://github.com/Rashta-2911"
+        />
+        <SocialIcon
+          icon={<FaLinkedin size={16} />}
+          href="https://www.linkedin.com/in/hernandiarashta/"
+        />
+        <SocialIcon
+          icon={<FaInstagram size={16} />}
+          href="https://www.instagram.com/hernandia_rashta/"
+        />
+        <SocialIcon
+          icon={<FaEnvelope size={16} />}
+          href="mailto:rashta2911@gmail.com"
+        />
+        <SocialIcon
+          icon={<FaTiktok size={16} />}
+          href="https://www.tiktok.com/@rashtarudigdo"
+        />
+      </div>
+    </div>
   );
 }
 
