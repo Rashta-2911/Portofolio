@@ -1257,11 +1257,17 @@ function MonkeyTypeStatsRealtime() {
   const stats = data?.profile;
   const results = data?.results || [];
 
-  // Group results by local date
+  // Group results by local date with better timestamp handling
   const activityMap: Record<string, number> = {};
   results.forEach((res: any) => {
-    const dateStr = getLocalDateString(new Date(res.timestamp));
-    activityMap[dateStr] = (activityMap[dateStr] || 0) + 1;
+    try {
+      // Handle both UTC timestamps (in ms) and ISO date strings
+      const resTimestamp = typeof res.timestamp === 'number' ? res.timestamp : new Date(res.timestamp).getTime();
+      const dateStr = getLocalDateString(new Date(resTimestamp));
+      activityMap[dateStr] = (activityMap[dateStr] || 0) + 1;
+    } catch (e) {
+      // Skip invalid timestamps silently
+    }
   });
 
   const getTimeBest = (seconds: number) => stats?.personalBests?.time?.[seconds]?.[0];
@@ -1391,6 +1397,7 @@ function MonkeyTypeStatsRealtime() {
               </div>
               <span className="text-[11px] sm:text-xs text-slate-500 font-mono tracking-wide">
                 {range === "2026" ? `${testsThisYear} tests` : (`${stats?.typingStats?.completedTests || 0} tests`)}
+                {!data?.hasRealResults && results.length > 0 && <span className="text-[9px] text-slate-600 ml-1">(est.)</span>}
               </span>
             </div>
             
@@ -1448,7 +1455,7 @@ function MonkeyTypeStatsRealtime() {
           </div>
 
           <p className="text-[9px] sm:text-[10px] text-slate-600 text-center mt-6 tracking-wide uppercase">
-            Note: All activity data is using UTC time.
+            {data?.hasRealResults ? "✓ Real activity data (UTC time)" : "⚡ Estimated activity from profile stats"}
           </p>
         </div>
       </div>
