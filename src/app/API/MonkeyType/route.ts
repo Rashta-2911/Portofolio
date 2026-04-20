@@ -38,7 +38,7 @@ export async function GET() {
     // Fetch Profile
     const profileRes = await fetch(`https://api.monkeytype.com/users/${MONKEYTYPE_USERNAME}/profile`, {
       headers,
-      next: { revalidate: 3600 } // Cache for 1 hour
+      next: { revalidate: 60 } // Reduced for real-time
     });
 
     if (!profileRes.ok) {
@@ -54,10 +54,10 @@ export async function GET() {
     
     try {
       const resultsRes = await fetch(
-        `https://api.monkeytype.com/results?limit=50&offset=0`,
+        `https://api.monkeytype.com/results?limit=1000&offset=0`,
         {
           headers,
-          next: { revalidate: 3600 } // Cache for 1 hour to avoid rate limiting
+          next: { revalidate: 60 } // Reduced for real-time
         }
       );
 

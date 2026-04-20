@@ -1238,12 +1238,17 @@ function MonkeyTypeStatsRealtime() {
   };
 
   useEffect(() => {
-    fetch("/API/MonkeyType")
-      .then((res) => res.json())
-      .then((json) => {
-        setData(json);
-      })
-      .catch((err) => console.error("Failed to fetch MonkeyType stats:", err));
+    const fetchData = () => {
+      fetch("/API/MonkeyType")
+        .then((res) => res.json())
+        .then((json) => {
+          setData(json);
+        })
+        .catch((err) => console.error("Failed to fetch MonkeyType stats:", err));
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 60000); // Poll every 60 seconds
 
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -1251,7 +1256,10 @@ function MonkeyTypeStatsRealtime() {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const stats = data?.profile;
@@ -1272,6 +1280,14 @@ function MonkeyTypeStatsRealtime() {
 
   const getTimeBest = (seconds: number) => stats?.personalBests?.time?.[seconds]?.[0];
   const getWordBest = (words: number) => stats?.personalBests?.words?.[words]?.[0];
+
+  const formatTime = (seconds: number) => {
+    if (!seconds) return "-";
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    if (hrs > 0) return `${hrs}h ${mins}m`;
+    return `${mins}m`;
+  };
 
   const t15 = getTimeBest(15);
   const t30 = getTimeBest(30);
@@ -1297,13 +1313,15 @@ function MonkeyTypeStatsRealtime() {
     </div>
   );
 
+  const currentYear = new Date().getFullYear().toString();
+
   // Heatmap Logic
   const today = new Date();
   const todayStr = getLocalDateString(today);
   const weeks: Date[][] = [];
   
-  if (range === "2026") {
-    const startOfYear = new Date(2026, 0, 1);
+  if (range === currentYear) {
+    const startOfYear = new Date(parseInt(currentYear), 0, 1);
     const firstDay = new Date(startOfYear);
     firstDay.setDate(firstDay.getDate() - firstDay.getDay());
     
@@ -1335,8 +1353,15 @@ function MonkeyTypeStatsRealtime() {
   }
 
   const testsThisYear = Object.keys(activityMap).reduce((acc, date) => {
-    return date.startsWith("2026") ? acc + activityMap[date] : acc;
+    return date.startsWith(currentYear) ? acc + activityMap[date] : acc;
   }, 0);
+
+  const avgWPM = results.length > 0 
+    ? Math.round(results.reduce((acc: number, r: any) => acc + r.wpm, 0) / results.length) 
+    : 0;
+  const avgAcc = results.length > 0
+    ? Math.round(results.reduce((acc: number, r: any) => acc + r.acc, 0) / results.length)
+    : 0;
 
   return (
     <div className="w-full overflow-x-hidden font-mono mt-6 sm:mt-8">
@@ -1345,6 +1370,29 @@ function MonkeyTypeStatsRealtime() {
         <h3 className="text-xl sm:text-2xl font-bold gradient-text-primary">MonkeyType Profile</h3>
         {!data && <span className="w-2 h-2 rounded-full bg-cyan-400/50 animate-pulse ml-2" />}
       </div>
+
+        <div className="flex gap-4 sm:gap-6 px-2 mb-8 overflow-x-auto pb-4 scrollbar-hide">
+          <div className="flex flex-col min-w-max">
+            <span className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">completed</span>
+            <span className="text-xl font-bold text-[#00F5FF]">{stats?.typingStats?.completedTests || 0}</span>
+          </div>
+          <div className="flex flex-col border-l border-slate-800 pl-4 sm:pl-6 min-w-max">
+            <span className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">started</span>
+            <span className="text-xl font-bold text-slate-400">{stats?.typingStats?.startedTests || 0}</span>
+          </div>
+          <div className="flex flex-col border-l border-slate-800 pl-4 sm:pl-6 min-w-max">
+            <span className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">avg wpm</span>
+            <span className="text-xl font-bold text-[#ADFF2F]">{avgWPM || "-"}</span>
+          </div>
+          <div className="flex flex-col border-l border-slate-800 pl-4 sm:pl-6 min-w-max">
+            <span className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">avg acc</span>
+            <span className="text-xl font-bold text-slate-300">{avgAcc ? `${avgAcc}%` : "-"}</span>
+          </div>
+          <div className="flex flex-col border-l border-slate-800 pl-4 sm:pl-6 min-w-max">
+            <span className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">time typing</span>
+            <span className="text-xl font-bold text-[#A855F7]">{formatTime(stats?.typingStats?.timeTyping || 0)}</span>
+          </div>
+        </div>
 
       <div className="flex flex-col gap-4 sm:gap-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 w-full">
@@ -1387,7 +1435,7 @@ function MonkeyTypeStatsRealtime() {
 
                 {dropdownOpen && (
                   <div className="absolute left-0 top-full mt-1 w-40 rounded-lg shadow-xl z-50 overflow-hidden py-1" style={{ background: "#1E293B", border: "1px solid rgba(255,255,255,0.1)" }}>
-                    {["last 12 months", "2026"].map((opt) => (
+                    {["last 12 months", currentYear].map((opt) => (
                       <div key={opt} onClick={() => { setRange(opt); setDropdownOpen(false); }} className={`px-3 py-2 text-[11px] sm:text-xs cursor-pointer transition-colors ${range === opt ? 'text-[#ADFF2F] bg-slate-800' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}>
                         {opt}
                       </div>
@@ -1396,7 +1444,7 @@ function MonkeyTypeStatsRealtime() {
                 )}
               </div>
               <span className="text-[11px] sm:text-xs text-slate-500 font-mono tracking-wide">
-                {range === "2026" ? `${testsThisYear} tests` : (`${stats?.typingStats?.completedTests || 0} tests`)}
+                {range === currentYear ? `${testsThisYear} tests` : (`${stats?.typingStats?.completedTests || 0} tests`)}
                 {!data?.hasRealResults && results.length > 0 && <span className="text-[9px] text-slate-600 ml-1">(est.)</span>}
               </span>
             </div>
