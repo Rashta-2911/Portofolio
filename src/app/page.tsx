@@ -34,6 +34,7 @@ import {
 } from "react-icons/fa";
 
 import { SiNextdotjs, SiTailwindcss, SiRedux, SiCanva, SiVisualparadigm, SiLaravel, SiPhp, SiMysql } from "react-icons/si";
+import { title } from "process";
 
 /* =============================================
    TYPE DEFINITIONS
@@ -70,6 +71,22 @@ const PROJECTS_DATA = [
     gradient: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(173,255,47,0.15))",
     borderColor: "rgba(168,85,247,0.15)",
     link: "https://portofolio-alpha-eight-17.vercel.app/",
+  },
+  {
+    title: "Mood Board",
+    desc: "Logo design and branding for a local business, creating a cohesive visual identity across digital and print media.",
+    tags: ["Adobe Illustrator", "Canva"],
+    gradient: "linear-gradient(135deg, rgba(173,255,47,0.15), rgba(0,245,255,0.15))",
+    borderColor: "rgba(173,255,47,0.15)",
+    link: "/Documents/Product Design.pdf",
+  },
+  {
+    title: "Go-Food Merchant Watch",
+    desc: "Data analysis and dashboard design for Go-Food merchants, providing insights on sales performance and customer behavior.",
+    tags: ["Google Form", "Figma", "Canva"],
+    gradient: "linear-gradient(135deg, rgba(0,245,255,0.15), rgba(168,85,247,0.15))",
+    borderColor: "rgba(0,245,255,0.15)",
+    link: "https://canva.link/l8o2yvetl3sup0k",
   },
 ];
 
