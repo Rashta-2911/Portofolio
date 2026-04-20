@@ -1269,12 +1269,13 @@ function MonkeyTypeStatsRealtime() {
   const activityMap: Record<string, number> = {};
   results.forEach((res: any) => {
     try {
-      // Handle both UTC timestamps (in ms) and ISO date strings
-      const resTimestamp = typeof res.timestamp === 'number' ? res.timestamp : new Date(res.timestamp).getTime();
+      const rawTimestamp = typeof res.timestamp === 'number' ? res.timestamp : new Date(res.timestamp).getTime();
+      // Handle both seconds (MonkeyType API) and milliseconds
+      const resTimestamp = rawTimestamp < 10000000000 ? rawTimestamp * 1000 : rawTimestamp;
       const dateStr = getLocalDateString(new Date(resTimestamp));
       activityMap[dateStr] = (activityMap[dateStr] || 0) + 1;
     } catch (e) {
-      // Skip invalid timestamps silently
+      // Skip invalid timestamps
     }
   });
 
@@ -1323,7 +1324,10 @@ function MonkeyTypeStatsRealtime() {
   if (range === currentYear) {
     const startOfYear = new Date(parseInt(currentYear), 0, 1);
     const firstDay = new Date(startOfYear);
-    firstDay.setDate(firstDay.getDate() - firstDay.getDay());
+    // Align to previous Monday
+    const dayOfWeek = firstDay.getDay();
+    const diff = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    firstDay.setDate(firstDay.getDate() - diff);
     
     for (let w = 0; w < 53; w++) {
       const week: Date[] = [];
@@ -1339,7 +1343,10 @@ function MonkeyTypeStatsRealtime() {
     startPoint.setFullYear(startPoint.getFullYear() - 1);
     const firstDay = new Date(startPoint);
     firstDay.setHours(0, 0, 0, 0);
-    firstDay.setDate(firstDay.getDate() - firstDay.getDay());
+    // Align to previous Monday
+    const dayOfWeek = firstDay.getDay();
+    const diff = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    firstDay.setDate(firstDay.getDate() - diff);
 
     for (let w = 0; w < 53; w++) {
       const week: Date[] = [];
@@ -1463,8 +1470,12 @@ function MonkeyTypeStatsRealtime() {
           <div className="flex gap-1.5 sm:gap-2 min-w-max text-[10px] sm:text-xs text-slate-500 font-mono pr-2">
             <div className="flex flex-col justify-between py-0.5 sm:py-1 pr-1 sm:pr-2 h-[84px] sm:h-[108px]">
               <span>mon</span>
+              <span>tue</span>
               <span>wed</span>
+              <span>thu</span>
               <span>fri</span>
+              <span>sat</span>
+              <span>sun</span>
             </div>
             
             <div className="flex gap-1">
