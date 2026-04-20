@@ -75,7 +75,7 @@ const PROJECTS_DATA = [
   {
     title: "Mood Board",
     desc: "Logo design and branding for a local business, creating a cohesive visual identity across digital and print media.",
-    tags: ["Adobe Illustrator", "Canva"],
+    tags: ["Adobe Illustrator", "Canva", "Affinity"],
     gradient: "linear-gradient(135deg, rgba(173,255,47,0.15), rgba(0,245,255,0.15))",
     borderColor: "rgba(173,255,47,0.15)",
     link: "/Documents/Product Design.pdf",
@@ -88,6 +88,14 @@ const PROJECTS_DATA = [
     borderColor: "rgba(0,245,255,0.15)",
     link: "https://canva.link/l8o2yvetl3sup0k",
   },
+  {
+    title: "Jaga Muda",
+    desc: "A mobile app prototype for a youth organization, featuring event management, member profiles, and community engagement tools.",
+    tags: ["Figma"],
+    gradient: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(173,255,47,0.15))",
+    borderColor: "rgba(168,85,247,0.15)",
+    link: "https://www.figma.com/design/QvTVL7YzUAbtnqxuDqnlEs/JagaMuda-IA?node-id=0-1&t=bnJEG146krMBRS3w-1"
+  }
 ];
 
 const CERTIFICATES_DATA = [
