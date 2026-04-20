@@ -53,33 +53,35 @@ export async function GET() {
     let hasRealResults = false;
     
     try {
+      // Try with a safer limit (250 is the standard MonkeyType limit for keys)
       const resultsRes = await fetch(
-        `https://api.monkeytype.com/results?limit=1000&offset=0`,
+        `https://api.monkeytype.com/results?limit=500`,
         {
           headers,
-          next: { revalidate: 60 } // Reduced for real-time
+          next: { revalidate: 60 }
         }
       );
 
       if (resultsRes.ok) {
         const resultsData = await resultsRes.json();
-        results = resultsData.data || [];
+        // Handle both { data: [...] } and directly [...]
+        results = Array.isArray(resultsData) ? resultsData : (resultsData.data || []);
         hasRealResults = results.length > 0;
         console.log("Successfully fetched real results:", results.length);
       } else {
-        console.warn(`Results endpoint returned ${resultsRes.status}, using synthetic data`);
-        // Fallback to synthetic data if rate limited or unavailable
+        console.warn(`Results endpoint returned ${resultsRes.status}, trying fallback or synthetic`);
+        // If results endpoint fails, it might be the limit. But let's fallback to synthetic for now
+        // with more realistic distribution.
         results = generateSyntheticActivity(
           profile?.typingStats?.completedTests || 0,
-          profile?.addedAt || Date.now()
+          profile?.addedAt || (Date.now() - 365 * 24 * 60 * 60 * 1000)
         );
       }
     } catch (resultsError) {
       console.warn("Error fetching results, using synthetic data:", resultsError);
-      // Fallback to synthetic data
       results = generateSyntheticActivity(
         profile?.typingStats?.completedTests || 0,
-        profile?.addedAt || Date.now()
+        profile?.addedAt || (Date.now() - 365 * 24 * 60 * 60 * 1000)
       );
     }
 

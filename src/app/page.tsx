@@ -1228,6 +1228,7 @@ function MonkeyTypeStatsRealtime() {
   const [range, setRange] = useState("last 12 months");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [lastSync, setLastSync] = useState<string>("");
 
   // Helper to get YYYY-MM-DD in local time
   const getLocalDateString = (date: Date) => {
@@ -1243,6 +1244,7 @@ function MonkeyTypeStatsRealtime() {
         .then((res) => res.json())
         .then((json) => {
           setData(json);
+          setLastSync(new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }));
         })
         .catch((err) => console.error("Failed to fetch MonkeyType stats:", err));
     };
@@ -1375,6 +1377,7 @@ function MonkeyTypeStatsRealtime() {
       <div className="flex items-center gap-3 mb-6 px-2">
         <FaKeyboard size={24} color="#00F5FF" />
         <h3 className="text-xl sm:text-2xl font-bold gradient-text-primary">MonkeyType Profile</h3>
+        {lastSync && <span className="text-[10px] text-slate-500 font-mono ml-auto opacity-60">Sync: {lastSync}</span>}
         {!data && <span className="w-2 h-2 rounded-full bg-cyan-400/50 animate-pulse ml-2" />}
       </div>
 
@@ -1468,14 +1471,14 @@ function MonkeyTypeStatsRealtime() {
           </div>
           
           <div className="flex gap-1.5 sm:gap-2 min-w-max text-[10px] sm:text-xs text-slate-500 font-mono pr-2">
-            <div className="flex flex-col justify-between py-0.5 sm:py-1 pr-1 sm:pr-2 h-[84px] sm:h-[108px]">
-              <span>mon</span>
-              <span>tue</span>
-              <span>wed</span>
-              <span>thu</span>
-              <span>fri</span>
-              <span>sat</span>
-              <span>sun</span>
+            <div className="flex flex-col justify-between py-1 pr-1 sm:pr-3 h-[90px] sm:h-[110px]">
+              <span className="text-[10px] uppercase text-slate-500">mon</span>
+              <span className="text-[10px] uppercase text-slate-500/30">tue</span>
+              <span className="text-[10px] uppercase text-slate-500">wed</span>
+              <span className="text-[10px] uppercase text-slate-500/30">thu</span>
+              <span className="text-[10px] uppercase text-slate-500">fri</span>
+              <span className="text-[10px] uppercase text-slate-500/30">sat</span>
+              <span className="text-[10px] uppercase text-slate-500">sun</span>
             </div>
             
             <div className="flex gap-1">
