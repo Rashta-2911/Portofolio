@@ -20,22 +20,32 @@ export async function GET() {
       next: { revalidate: 60 }
     });
 
-    // Fetch Results (Activity)
-    const resultsRes = await fetch(`https://api.monkeytype.com/results`, {
-      headers,
-      next: { revalidate: 60 }
-    });
-
-    if (!profileRes.ok || !resultsRes.ok) {
-      throw new Error(`Failed to fetch from MonkeyType API`);
+    if (!profileRes.ok) {
+      throw new Error(`Failed to fetch profile from MonkeyType API: ${profileRes.status}`);
     }
 
     const profileData = await profileRes.json();
-    const resultsData = await resultsRes.json();
+
+    // Fetch Results (Activity) - with limit parameter
+    let resultsData = { data: [] };
+    try {
+      const resultsRes = await fetch(`https://api.monkeytype.com/results?limit=100`, {
+        headers,
+        next: { revalidate: 60 }
+      });
+
+      if (resultsRes.ok) {
+        resultsData = await resultsRes.json();
+      } else {
+        console.warn(`Failed to fetch results: ${resultsRes.status}`);
+      }
+    } catch (resultsError) {
+      console.warn("Error fetching results, continuing with profile data only:", resultsError);
+    }
 
     return NextResponse.json({
       profile: profileData.data,
-      results: resultsData.data
+      results: resultsData.data || []
     });
   } catch (error: any) {
     console.error("Error fetching MonkeyType stats:", error);
