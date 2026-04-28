@@ -1250,7 +1250,7 @@ function MonkeyTypeStatsRealtime() {
     };
 
     fetchData();
-    const interval = setInterval(fetchData, 60000); // Poll every 60 seconds
+    const interval = setInterval(fetchData, 300000); // Poll every 5 minutes to avoid rate limit
 
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -1281,7 +1281,7 @@ function MonkeyTypeStatsRealtime() {
     }
   });
 
-  const getTimeBest = (seconds: number) => stats?.personalBests?.time?.[seconds]?.[0];
+  const getTimeBest = (seconds: number) => stats?.personalBests?.[seconds]?.[0];
   const getWordBest = (words: number) => stats?.personalBests?.words?.[words]?.[0];
 
   const formatTime = (seconds: number) => {
@@ -1379,6 +1379,11 @@ function MonkeyTypeStatsRealtime() {
         <h3 className="text-xl sm:text-2xl font-bold gradient-text-primary">MonkeyType Profile</h3>
         {lastSync && <span className="text-[10px] text-slate-500 font-mono ml-auto opacity-60">Sync: {lastSync}</span>}
         {!data && <span className="w-2 h-2 rounded-full bg-cyan-400/50 animate-pulse ml-2" />}
+        {data?.isRateLimited && (
+          <span className="text-[10px] text-amber-500 font-mono ml-2 animate-pulse">
+            [Rate Limited - Retrying...]
+          </span>
+        )}
       </div>
 
         <div className="flex gap-4 sm:gap-6 px-2 mb-8 overflow-x-auto pb-4 scrollbar-hide">
