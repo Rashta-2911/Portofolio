@@ -5,7 +5,8 @@ let monkeyCache: {
   timestamp: number;
 } | null = null;
 
-const CACHE_TTL = 15 * 60 * 1000;
+// Perpanjang TTL Cache menjadi 30 Menit untuk menghindari Rate Limit
+const CACHE_TTL = 30 * 60 * 1000;
 
 function groupByDate(results: any[]) {
   const grouped: Record<string, number> = {};
@@ -33,7 +34,6 @@ function fillMissingDates(
   return result;
 }
 
-// Fallback: hitung personal best dari array results jika API PB gagal
 function extractPbFromResults(results: any[]) {
   const timeKeys = ["15", "30", "60", "120"];
   const wordKeys = ["10", "25", "50", "100"];
@@ -70,6 +70,7 @@ export async function GET() {
   }
 
   const now = Date.now();
+  // Mengembalikan cache jika belum expired
   if (monkeyCache && now - monkeyCache.timestamp < CACHE_TTL) {
     return NextResponse.json({ ...monkeyCache.data, fromCache: true });
   }
@@ -101,73 +102,47 @@ export async function GET() {
       }),
     ]);
 
-    console.log("[MonkeyType] Status:", {
-      stats: statsRes.status,
-      pbTime: pbTimeRes.status,
-      pbWords: pbWordsRes.status,
-      results: resultsRes.status,
-    });
-
-    // Rate limit
+    // Jika ada request yang kena Rate Limit (HTTP 429)
     if ([statsRes, pbTimeRes, pbWordsRes, resultsRes].some((r) => r.status === 429)) {
-      console.warn("[MonkeyType] Rate limited!");
+      console.warn("[MonkeyType] ApeKey Rate limited!");
       if (monkeyCache) {
+        // Paksa perpanjang timestamp cache agar tidak spam fetch saat rate limit
+        monkeyCache.timestamp = now;
         return NextResponse.json({ ...monkeyCache.data, fromCache: true, isRateLimited: true });
       }
-      return NextResponse.json({ error: "Rate limited" }, { status: 429 });
+      return NextResponse.json({ error: "Rate limited by MonkeyType API" }, { status: 429 });
     }
 
-    // Stats
+    // Process Stats
     let typingStats = null;
     if (statsRes.ok) {
       const d = await statsRes.json();
       typingStats = d.data ?? d;
-    } else {
-      const t = await statsRes.text();
-      console.warn("[MonkeyType] stats failed:", statsRes.status, t);
     }
 
-    // Results dulu — diperlukan untuk fallback PB
+    // Process Results
     let results: any[] = [];
     if (resultsRes.ok) {
       const d = await resultsRes.json();
       results = Array.isArray(d) ? d : (d.data ?? []);
-      console.log("[MonkeyType] results count:", results.length);
-    } else {
-      const t = await resultsRes.text();
-      console.warn("[MonkeyType] results failed:", resultsRes.status, t);
     }
 
-    // Personal bests — coba dari API dulu, fallback ke results
+    // Process Personal Bests
     let personalBests = null;
     if (pbTimeRes.ok) {
       const d = await pbTimeRes.json();
       const timeData = d.data ?? d;
-      console.log("[MonkeyType] pbTime raw:", JSON.stringify(timeData));
 
       let wordsData: Record<string, any> = {};
       if (pbWordsRes.ok) {
         const dw = await pbWordsRes.json();
         wordsData = dw.data ?? dw;
-        console.log("[MonkeyType] pbWords raw:", JSON.stringify(wordsData));
-      } else {
-        const t = await pbWordsRes.text();
-        console.warn("[MonkeyType] pbWords failed:", pbWordsRes.status, t);
       }
 
       personalBests = { ...timeData, words: wordsData };
-    } else {
-      const t = await pbTimeRes.text();
-      console.warn("[MonkeyType] pbTime failed:", pbTimeRes.status, t);
-
-      // Fallback: hitung PB dari results yang sudah ada
-      if (results.length > 0) {
-        console.log("[MonkeyType] Using fallback PB from results...");
-        personalBests = extractPbFromResults(results);
-      }
+    } else if (results.length > 0) {
+      personalBests = extractPbFromResults(results);
     }
-
-    console.log("[MonkeyType] personalBests:", JSON.stringify(personalBests));
 
     const grouped = groupByDate(results);
     const activityByDate = fillMissingDates(grouped, 365);
@@ -188,7 +163,6 @@ export async function GET() {
 
     if (typingStats || personalBests || results.length > 0) {
       monkeyCache = { data: finalData, timestamp: now };
-      console.log("[MonkeyType] Cache updated.");
     }
 
     return NextResponse.json(finalData);
