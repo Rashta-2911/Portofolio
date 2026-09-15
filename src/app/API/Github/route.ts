@@ -8,8 +8,9 @@ export async function GET() {
     return Response.json(data)
   } catch (error) {
     console.error("API Error:", error)
+    const errorMessage = error instanceof Error ? error.message : "Failed to fetch GitHub stats"
     return Response.json(
-      { error: "Failed to fetch GitHub stats" },
+      { error: errorMessage },
       { status: 500 }
     )
   }

@@ -70,7 +70,7 @@ const PROJECTS_DATA = [
     tags: ["Next.js", "Tailwind", "TypeScript"],
     gradient: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(173,255,47,0.15))",
     borderColor: "rgba(168,85,247,0.15)",
-    link: "https://portofolio-alpha-eight-17.vercel.app/",
+    link: "https://portofolio-three-lac-31.vercel.app/",
   },
   {
     title: "Mood Board",
@@ -1281,6 +1281,73 @@ function MonkeyTypeStatsRealtime() {
     }
   });
 
+  // Calculate progress statistics
+  const calculateStreaks = () => {
+    let longestStreak = 0;
+    let currentStreak = 0;
+    const sortedDates = Object.keys(activityMap).sort();
+    let previousDate: string | null = null;
+
+    sortedDates.forEach((date) => {
+      if (previousDate) {
+        const prev = new Date(previousDate);
+        const curr = new Date(date);
+        const diffDays = Math.floor((curr.getTime() - prev.getTime()) / (1000 * 60 * 60 * 24));
+        if (diffDays === 1) {
+          currentStreak++;
+        } else {
+          longestStreak = Math.max(longestStreak, currentStreak);
+          currentStreak = 1;
+        }
+      } else {
+        currentStreak = 1;
+      }
+      previousDate = date;
+    });
+    longestStreak = Math.max(longestStreak, currentStreak);
+
+    // Check if current streak is still active (includes today or yesterday)
+    const today = getLocalDateString(new Date());
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = getLocalDateString(yesterday);
+    
+    const isStreakActive = activityMap[today] || activityMap[yesterdayStr];
+    return { longestStreak, currentStreak: isStreakActive ? currentStreak : 0 };
+  };
+
+  const calculateTimeframeStats = (days: number) => {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - days);
+    const startDateStr = getLocalDateString(startDate);
+    
+    return Object.keys(activityMap)
+      .filter(date => date >= startDateStr)
+      .reduce((sum, date) => sum + activityMap[date], 0);
+  };
+
+  const calculateWPMTrend = () => {
+    if (results.length < 2) return { recent: 0, change: 0, percent: 0 };
+    const recent = results.slice(0, Math.ceil(results.length / 4));
+    const older = results.slice(Math.ceil(results.length / 4));
+    const recentAvg = Math.round(recent.reduce((acc: number, r: any) => acc + r.wpm, 0) / recent.length);
+    const olderAvg = Math.round(older.reduce((acc: number, r: any) => acc + r.wpm, 0) / older.length);
+    const change = recentAvg - olderAvg;
+    const percent = olderAvg > 0 ? Math.round((change / olderAvg) * 100) : 0;
+    return { recent: recentAvg, change, percent };
+  };
+
+  const calculateAccTrend = () => {
+    if (results.length < 2) return { recent: 0, change: 0, percent: 0 };
+    const recent = results.slice(0, Math.ceil(results.length / 4));
+    const older = results.slice(Math.ceil(results.length / 4));
+    const recentAvg = Math.round(recent.reduce((acc: number, r: any) => acc + r.acc, 0) / recent.length * 100) / 100;
+    const olderAvg = Math.round(older.reduce((acc: number, r: any) => acc + r.acc, 0) / older.length * 100) / 100;
+    const change = recentAvg - olderAvg;
+    const percent = olderAvg > 0 ? Math.round((change / olderAvg) * 100 * 100) / 100 : 0;
+    return { recent: recentAvg, change, percent };
+  };
+
   const getTimeBest = (seconds: number) => stats?.personalBests?.[seconds]?.[0];
   const getWordBest = (words: number) => stats?.personalBests?.words?.[words]?.[0];
 
@@ -1291,6 +1358,12 @@ function MonkeyTypeStatsRealtime() {
     if (hrs > 0) return `${hrs}h ${mins}m`;
     return `${mins}m`;
   };
+
+  const streaks = calculateStreaks();
+  const testsThisWeek = calculateTimeframeStats(7);
+  const testsThisMonth = calculateTimeframeStats(30);
+  const wpmTrend = calculateWPMTrend();
+  const accTrend = calculateAccTrend();
 
   const t15 = getTimeBest(15);
   const t30 = getTimeBest(30);
@@ -1406,6 +1479,65 @@ function MonkeyTypeStatsRealtime() {
           <div className="flex flex-col border-l border-slate-800 pl-4 sm:pl-6 min-w-max">
             <span className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">time typing</span>
             <span className="text-xl font-bold text-[#A855F7]">{formatTime(stats?.typingStats?.timeTyping || 0)}</span>
+          </div>
+        </div>
+
+        {/* Progress Stats Section */}
+        <div className="flex gap-4 sm:gap-6 px-2 mb-8 overflow-x-auto pb-4 scrollbar-hide border-t border-slate-800 pt-6">
+          <div className="flex flex-col min-w-max">
+            <span className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">longest streak</span>
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-2xl font-bold text-[#00F5FF]">{streaks.longestStreak}</span>
+              <span className="text-xs text-slate-500">days</span>
+            </div>
+          </div>
+          
+          <div className="flex flex-col border-l border-slate-800 pl-4 sm:pl-6 min-w-max">
+            <span className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">current streak</span>
+            <div className="flex items-baseline gap-1.5">
+              <span className={`text-2xl font-bold ${streaks.currentStreak > 0 ? 'text-[#ADFF2F]' : 'text-slate-600'}`}>
+                {streaks.currentStreak}
+              </span>
+              <span className="text-xs text-slate-500">days</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col border-l border-slate-800 pl-4 sm:pl-6 min-w-max">
+            <span className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">this week</span>
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-2xl font-bold text-[#A855F7]">{testsThisWeek}</span>
+              <span className="text-xs text-slate-500">tests</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col border-l border-slate-800 pl-4 sm:pl-6 min-w-max">
+            <span className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">this month</span>
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-2xl font-bold text-slate-300">{testsThisMonth}</span>
+              <span className="text-xs text-slate-500">tests</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col border-l border-slate-800 pl-4 sm:pl-6 min-w-max">
+            <span className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">wpm trend</span>
+            <div className="flex items-baseline gap-1.5">
+              <span className={`text-2xl font-bold ${wpmTrend.percent > 0 ? 'text-[#ADFF2F]' : wpmTrend.percent < 0 ? 'text-slate-500' : 'text-slate-400'}`}>
+                {wpmTrend.percent > 0 ? '+' : ''}{wpmTrend.percent}%
+              </span>
+              {wpmTrend.percent > 0 && <span className="text-xs text-[#ADFF2F]">↑</span>}
+              {wpmTrend.percent < 0 && <span className="text-xs text-slate-500">↓</span>}
+            </div>
+          </div>
+
+          <div className="flex flex-col border-l border-slate-800 pl-4 sm:pl-6 min-w-max">
+            <span className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">acc trend</span>
+            <div className="flex items-baseline gap-1.5">
+              <span className={`text-2xl font-bold ${accTrend.percent > 0 ? 'text-[#00F5FF]' : accTrend.percent < 0 ? 'text-slate-500' : 'text-slate-400'}`}>
+                {accTrend.percent > 0 ? '+' : ''}{accTrend.percent}%
+              </span>
+              {accTrend.percent > 0 && <span className="text-xs text-[#00F5FF]">↑</span>}
+              {accTrend.percent < 0 && <span className="text-xs text-slate-500">↓</span>}
+            </div>
           </div>
         </div>
 
@@ -1540,6 +1672,17 @@ function GithubStatsRealtime() {
     fetch("/API/Github")
       .then(res => res.json())
       .then(data => {
+        // Check if response contains an error
+        if (data.error) {
+          console.error("GitHub API error:", data.error)
+          return
+        }
+
+        // Validate that data has the expected structure
+        if (!data.weeks || !Array.isArray(data.weeks)) {
+          console.error("Invalid GitHub data structure")
+          return
+        }
 
         setStats(data)
 
@@ -1570,9 +1713,12 @@ function GithubStatsRealtime() {
         }
 
       })
+      .catch(err => {
+        console.error("Failed to fetch GitHub stats:", err)
+      })
   }, [])
 
-  if (!stats) return <p>Loading GitHub Stats...</p>
+  if (!stats) return <p className="text-text-muted">Unable to load GitHub stats. Please check your environment variables.</p>
 
   // Get contribution color based on count
   const getContributionColor = (count: number, maxCount: number) => {
