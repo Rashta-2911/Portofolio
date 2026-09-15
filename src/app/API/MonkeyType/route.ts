@@ -87,11 +87,11 @@ export async function GET() {
         headers: authHeaders,
         cache: "no-store",
       }),
-      fetch(`https://api.monkeytype.com/users/personalBests?mode=time&difficulty=normal`, {
+      fetch(`https://api.monkeytype.com/users/personalBests?mode=time`, {
         headers: authHeaders,
         cache: "no-store",
       }),
-      fetch(`https://api.monkeytype.com/users/personalBests?mode=words&difficulty=normal`, {
+      fetch(`https://api.monkeytype.com/users/personalBests?mode=words`, {
         headers: authHeaders,
         cache: "no-store",
       }),
