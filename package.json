@@ -8,6 +8,12 @@
     "start": "next start",
     "lint": "eslint"
   },
+
+  "allowScripts": {
+  "sharp": true,
+  "unrs-resolver": true
+},
+
   "dependencies": {
     "@octokit/core": "^7.0.6",
     "@octokit/graphql": "^9.0.3",
