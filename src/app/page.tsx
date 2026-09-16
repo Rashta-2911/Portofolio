@@ -95,6 +95,13 @@ const PROJECTS_DATA = [
     gradient: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(173,255,47,0.15))",
     borderColor: "rgba(168,85,247,0.15)",
     link: "https://www.figma.com/design/QvTVL7YzUAbtnqxuDqnlEs/JagaMuda-IA?node-id=0-1&t=bnJEG146krMBRS3w-1"
+  },
+  {
+    title: "Pojok Hunian",
+    desc: "Web app manajemen indekos yang berfungsi untuk mengelola dan melakukan CRUD di dalam web app tersebut.",
+    tags: ["Laravel", "PHP", "Filament"],
+    gradient: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(173,255,47,0.15))",
+    borderColor: "rgba(168,85,247,0.15)"
   }
 ];
 
@@ -339,7 +346,7 @@ function HomePage() {
 
             {/* Quick stats */}
             <div className="flex flex-col xs:flex-row flex-wrap gap-4 xs:gap-5 sm:gap-6 md:gap-8 mt-6 xs:mt-8 sm:mt-10">
-              <StatBadge value="6th" label="Semester" />
+              <StatBadge value="7th" label="Semester" />
               <StatBadge value={PROJECTS_DATA.length.toString()} label="Projects" />
               <StatBadge value={CERTIFICATES_DATA.length.toString()} label="Certificates" />
             </div>
