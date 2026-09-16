@@ -59,22 +59,22 @@ interface NavItem {
 const PROJECTS_DATA = [
   {
     title: "RuangKonsul",
-    desc: "A full-stack application with doctor scheduling, real-time chat, and Midtrans payment integration.",
+    desc: "Website yang menyediakan jasa booking konsultasi dan menjual produk alat kesehatan.",
     tags: ["Laravel", "Filament", "Midtrans"],
     gradient: "linear-gradient(135deg, rgba(0,245,255,0.15), rgba(168,85,247,0.15))",
     borderColor: "rgba(0,245,255,0.15)",
   },
   {
     title: "Portfolio Website",
-    desc: "Modern portfolio with glassmorphism design, smooth animations, and responsive layout built with Next.js.",
+    desc: "Website Portofolio yang menggunakan framework Next. js dan mengambil API dari monkeytype dan GitHub.",
     tags: ["Next.js", "Tailwind", "TypeScript"],
     gradient: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(173,255,47,0.15))",
     borderColor: "rgba(168,85,247,0.15)",
-    link: "https://portofolio-three-lac-31.vercel.app/",
+    link: "https://portofolio-hernandia-rashta-r.vercel.app/",
   },
   {
     title: "Mood Board",
-    desc: "Logo design and branding for a local business, creating a cohesive visual identity across digital and print media.",
+    desc: "Terdapat desain logo BroWTein, filosofi, color palette, sketsa, dan HKI.",
     tags: ["Adobe Illustrator", "Canva", "Affinity"],
     gradient: "linear-gradient(135deg, rgba(173,255,47,0.15), rgba(0,245,255,0.15))",
     borderColor: "rgba(173,255,47,0.15)",
@@ -82,7 +82,7 @@ const PROJECTS_DATA = [
   },
   {
     title: "Go-Food Merchant Watch",
-    desc: "Data analysis and dashboard design for Go-Food merchants, providing insights on sales performance and customer behavior.",
+    desc: "Membuat desain Go-Food Merchant di jam tangan dan kemudian menjelaskan flow sistem untuk tampilan di jam tangan.",
     tags: ["Google Form", "Figma", "Canva"],
     gradient: "linear-gradient(135deg, rgba(0,245,255,0.15), rgba(168,85,247,0.15))",
     borderColor: "rgba(0,245,255,0.15)",
@@ -90,7 +90,7 @@ const PROJECTS_DATA = [
   },
   {
     title: "Jaga Muda",
-    desc: "A mobile app prototype for a youth organization, featuring event management, member profiles, and community engagement tools.",
+    desc: "Aplikasi mobile yang berfungsi untuk meminimalisir kekerasan serta memberikan edukasi terhadap kaum remaja.",
     tags: ["Figma"],
     gradient: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(173,255,47,0.15))",
     borderColor: "rgba(168,85,247,0.15)",
