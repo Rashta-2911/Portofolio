@@ -37,7 +37,7 @@ import { SiNextdotjs, SiTailwindcss, SiRedux, SiCanva, SiVisualparadigm, SiLarav
 import { title } from "process";
 
 /* =============================================
-   TYPE DEFINITIONS
+  TYPE DEFINITIONS
    ============================================= */
 type PageId =
   | "home"
@@ -54,7 +54,7 @@ interface NavItem {
 }
 
 /* =============================================
-   DATA DEFINITIONS
+  DATA DEFINITIONS
    ============================================= */
 const PROJECTS_DATA = [
   {
@@ -63,6 +63,7 @@ const PROJECTS_DATA = [
     tags: ["Laravel", "Filament", "Midtrans"],
     gradient: "linear-gradient(135deg, rgba(0,245,255,0.15), rgba(168,85,247,0.15))",
     borderColor: "rgba(0,245,255,0.15)",
+    status: "in-progress",
   },
   {
     title: "Portfolio Website",
@@ -71,6 +72,7 @@ const PROJECTS_DATA = [
     gradient: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(173,255,47,0.15))",
     borderColor: "rgba(168,85,247,0.15)",
     link: "https://portofolio-hernandia-rashta-r.vercel.app/",
+    status: "done",
   },
   {
     title: "Mood Board",
@@ -79,29 +81,25 @@ const PROJECTS_DATA = [
     gradient: "linear-gradient(135deg, rgba(173,255,47,0.15), rgba(0,245,255,0.15))",
     borderColor: "rgba(173,255,47,0.15)",
     link: "/Documents/Product Design.pdf",
+    status: "done",
   },
-  {
-    title: "Go-Food Merchant Watch",
-    desc: "Membuat desain Go-Food Merchant di jam tangan dan kemudian menjelaskan flow sistem untuk tampilan di jam tangan.",
-    tags: ["Google Form", "Figma", "Canva"],
-    gradient: "linear-gradient(135deg, rgba(0,245,255,0.15), rgba(168,85,247,0.15))",
-    borderColor: "rgba(0,245,255,0.15)",
-    link: "https://canva.link/l8o2yvetl3sup0k",
-  },
+  
   {
     title: "Jaga Muda",
     desc: "Aplikasi mobile yang berfungsi untuk meminimalisir kekerasan serta memberikan edukasi terhadap kaum remaja.",
     tags: ["Figma"],
     gradient: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(173,255,47,0.15))",
     borderColor: "rgba(168,85,247,0.15)",
-    link: "https://www.figma.com/design/QvTVL7YzUAbtnqxuDqnlEs/JagaMuda-IA?node-id=0-1&t=bnJEG146krMBRS3w-1"
+    link: "https://www.figma.com/design/QvTVL7YzUAbtnqxuDqnlEs/JagaMuda-IA?node-id=0-1&t=bnJEG146krMBRS3w-1",
+    status: "done",
   },
   {
     title: "Pojok Hunian",
     desc: "Web app manajemen indekos yang berfungsi untuk mengelola dan melakukan CRUD di dalam web app tersebut.",
     tags: ["Laravel", "PHP", "Filament"],
     gradient: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(173,255,47,0.15))",
-    borderColor: "rgba(168,85,247,0.15)"
+    borderColor: "rgba(168,85,247,0.15)",
+    status: "in-progress",
   }
 ];
 
@@ -111,7 +109,7 @@ const CERTIFICATES_DATA = [
 ];
 
 /* =============================================
-   MAIN COMPONENT
+  MAIN COMPONENT
    ============================================= */
 export default function MainPage() {
   const [activePage, setActivePage] = useState<PageId>("home");
@@ -307,7 +305,7 @@ function HomePage() {
             </h1>
 
             <p className="text-text-secondary text-sm xs:text-base sm:text-lg leading-relaxed mb-5 xs:mb-6 sm:mb-8 max-w-lg">
-              A sixth-semester Information Systems student at{" "}
+              A seventh-semester Information Systems student at{" "}
               <span className="text-primary font-medium">
                 Bina Nusantara University
               </span>{" "}
@@ -440,6 +438,7 @@ function HomePage() {
                     priority
                     sizes="(max-width: 480px) 160px, (max-width: 640px) 192px, (max-width: 768px) 240px, (max-width: 1024px) 288px, 320px"
                     className="object-cover"
+                    style={{objectPosition: "50% 20%"}}
                   />
                 </div>
               </div>
@@ -587,6 +586,23 @@ function ProjectsPage() {
               />
             </div>
 
+            <span
+              className="inline-block text-[10px] xs:text-xs px-2.5 py-1 rounded-full font-semibold uppercase tracking-wide mb-1"
+              style={{
+                background:
+                  project.status === "done"
+                    ? "rgba(34,197,94,0.12)"
+                    : "rgba(234,179,8,0.12)",
+                color: project.status === "done" ? "#22C55E" : "#EAB308",
+                border:
+                  project.status === "done"
+                    ? "1px solid rgba(34,197,94,0.3)"
+                    : "1px solid rgba(234,179,8,0.3)",
+              }}
+            >
+              {project.status === "done" ? "Done" : "In Progress"}
+            </span>
+
             <h3 className="text-base sm:text-lg md:text-xl font-bold text-text-primary mb-2 group-hover:text-primary transition-colors">
               {project.title}
             </h3>
@@ -726,7 +742,7 @@ function EducationPage() {
           institution="Bina Nusantara University"
           degree="S1 — Information Systems"
           period="2023 — Present"
-          desc="Currently in the 6th semester. Focused on UI/UX design, systems analysis, and full-stack software development. Active in student organizations and community projects."
+          desc="Currently in the 7th semester. Focused on UI/UX design, systems analysis, and full-stack software development. Active in student organizations and community projects."
           color="#00F5FF"
           active
         />
@@ -735,7 +751,7 @@ function EducationPage() {
           degree="Social Sciences (IPS)"
           period="2019 — 2023"
           desc="Graduated with strong foundation in analytical thinking, technology, and communication skills. Participated in various academic competitions and projects."
-          color="#A855F7"
+          color="#00F5FF"
         />
       </div>
 
@@ -783,15 +799,24 @@ function ExperiencePage() {
     {
       title: "HIMSISFO (Himpunan Sistem Informasi)",
       desc: "Public Relations Commission member for 2025. Involved in event planning committees including BPAR division and HIMSISFO Gold events.",
-      color: "#A855F7",
+      color: "#00F5FF",
       year: "2024",
+      image: "/Images/BPAR-2026.jpeg"
     },
     {
       title: "HARDIKNAS (National Education Day)",
       desc: "Served as an educator at SDN Srondol Wetan 05 in learning assistance activities for students during national education celebration.",
-      color: "#ADFF2F",
+      color: "#00F5FF",
       year: "2024",
+      image: "/Images/HARDIKNAS.jpeg"
     },
+    {
+      title: "Volunteer Pengobatan Gratis 6 September",
+      desc: "Menjadi panitia dalam perihal registrasi dan usher.",
+      color: "#00F5FF",
+      year: "2026",
+      image: "/Images/Volunteer.jpg",
+    }
   ];
 
   return (
@@ -852,6 +877,17 @@ function ExperiencePage() {
                 <p className="text-text-secondary text-xs sm:text-sm leading-relaxed">
                   {exp.desc}
                 </p>
+                {exp.image && (
+                  <div className="relative w-full h-64 sm:h-80 mt-4 overflow-hidden rounded-lg">
+                    <Image
+                      src={exp.image}
+                      alt={exp.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 640px"
+                      className="object-contain"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           ))}
